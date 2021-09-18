@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
        <meta charset="UTF-8">
@@ -76,7 +76,7 @@
                 <table>
                     <tr>
                         <th>No</th>
-                        <th>Name</th>
+                        <th th:text="${}">Name</th>
                         <th>Category</th>
                         <th>Start Year</th>
                         <th>End Year</th>

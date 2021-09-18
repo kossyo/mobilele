@@ -1,6 +1,6 @@
-package bg.softuni.mobilele.entities;
+package bg.softuni.mobilele.models.entities;
 
-import bg.softuni.mobilele.entities.enums.ModelCategory;
+import bg.softuni.mobilele.models.entities.enums.ModelCategory;
 
 import javax.persistence.*;
 
@@ -24,10 +24,10 @@ public class Model extends BaseEntity {
     private Brand brand;
 
     @Column
-    private int startYear;
+    private Integer startYear;
 
     @Column
-    private int EndYear;
+    private Integer endYear;
 
     public String getName() {
         return name;
@@ -61,20 +61,20 @@ public class Model extends BaseEntity {
         this.brand = brand;
     }
 
-    public int getStartYear() {
+    public Integer getStartYear() {
         return startYear;
     }
 
-    public void setStartYear(int startYear) {
+    public void setStartYear(Integer startYear) {
         this.startYear = startYear;
     }
 
-    public int getEndYear() {
-        return EndYear;
+    public Integer getEndYear() {
+        return endYear;
     }
 
-    public void setEndYear(int endYear) {
-        EndYear = endYear;
+    public void setEndYear(Integer endYear) {
+        this.endYear = endYear;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Model extends BaseEntity {
                 ", imageUrl='" + imageUrl + '\'' +
                 ", brand=" + brand +
                 ", startYear=" + startYear +
-                ", EndYear=" + EndYear +
+                ", EndYear=" + endYear +
                 '}';
     }
 }

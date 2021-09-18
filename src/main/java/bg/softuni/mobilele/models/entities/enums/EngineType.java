@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.entities.enums;
+package bg.softuni.mobilele.models.entities.enums;
 
 public enum EngineType {
     GASOLINE,

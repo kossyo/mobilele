@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.entities;
+package bg.softuni.mobilele.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

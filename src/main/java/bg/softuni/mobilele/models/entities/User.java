@@ -1,6 +1,4 @@
-package bg.softuni.mobilele.entities;
-
-import bg.softuni.mobilele.entities.enums.UserRoleType;
+package bg.softuni.mobilele.models.entities;
 
 import javax.persistence.*;
 import java.time.Instant;
