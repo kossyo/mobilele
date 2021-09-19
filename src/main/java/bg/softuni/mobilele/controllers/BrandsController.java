@@ -23,10 +23,9 @@ public class BrandsController {
     }
 
     @GetMapping("all")
-    public ModelAndView brands(ModelAndView mav){
+    public String brands(Model model){
         List<BrandDto> brands = brandService.findAll();
-        mav.addObject(brands);
-        mav.setViewName("brands");
-        return mav;
+        model.addAttribute("brands", brands);
+        return "brands";
     }
 }

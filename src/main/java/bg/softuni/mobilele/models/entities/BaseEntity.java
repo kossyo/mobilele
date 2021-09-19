@@ -40,12 +40,5 @@ public abstract class BaseEntity {
         this.updated = updated;
     }
 
-    @Override
-    public String toString() {
-        return "BaseEntity{" +
-                "id=" + id +
-                ", created=" + created +
-                ", updated=" + updated +
-                '}';
-    }
+
 }

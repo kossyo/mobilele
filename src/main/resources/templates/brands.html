@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-       <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>MobiLeLeLe</title>
     <link rel="stylesheet" href="/css/reset-css.css"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto col-12 justify-content-between">
                 <li class="nav-item"
-                    >
+                >
                     <a class="nav-link" href="/brands/all">All Brands</a>
                 </li>
                 <li class="nav-item">
@@ -52,14 +52,14 @@
                         <a class="nav-link" href="/users/logout">Logout</a>
                     </div>
                 </li>
-                
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users/login">Login</a>
-                    </li>
-                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/login">Login</a>
+                </li>
+
             </ul>
         </div>
     </nav>
@@ -68,27 +68,27 @@
 <div class="container">
     <h2 class="text-center text-white m-3">All Brands</h2>
     <div class='row mb-4 d-flex justify-content-around'>
-        <div  class="brand-section col-md-5 mr-auto d-flex flex-column">
+        <div th:each="brand: ${brands}" class="brand-section col-md-5 mr-auto d-flex flex-column">
             <h2>Car brand:
-                <span >Brand name</span>
+                <span th:text="${brand.getName()}"></span>
             </h2>
             <div>Models:
                 <table>
                     <tr>
                         <th>No</th>
-                        <th th:text="${}">Name</th>
+                        <th>Name</th>
                         <th>Category</th>
                         <th>Start Year</th>
                         <th>End Year</th>
                         <th>Picture</th>
                     </tr>
-                    <tr>
-                        <th>No</th>
-                        <th >Model Name</th>
-                        <th >Model Category</th>
-                        <th >Model Start Year</th>
-                        <th >Model End Year</th>
-                        <th><img alt="image" src="/"
+                    <tr th:each="model, iter: ${brand.getModels()}" th:object="${model}">
+                        <th th:text="${iter.index} + 1"></th>
+                        <th th:text="*{getName()}"></th>
+                        <th th:text="*{getCategory()}"></th>
+                        <th th:text="*{getStartYear()}"></th>
+                        <th th:text="*{getEndYear()}"></th>
+                        <th><img alt="image" th:src="${model.getImageUrl()}"
                                  class="img-thumbnail rounded"></th>
                     </tr>
                 </table>
@@ -97,7 +97,7 @@
     </div>
 
     <div>
-             <footer> </footer>
+        <footer></footer>
     </div>
 </div>
 </body>
