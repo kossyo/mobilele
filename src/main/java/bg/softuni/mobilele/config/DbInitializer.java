@@ -24,6 +24,8 @@ public class DbInitializer implements CommandLineRunner {
     private static final String IMAGE_GLS_CLASS = "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Mercedes-Benz_GL_350_BlueTEC_4MATIC_Sport-Paket_AMG_%28X_166%29_%E2%80%93_Frontansicht%2C_31._Dezember_2012%2C_D%C3%BCsseldorf.jpg/1920px-Mercedes-Benz_GL_350_BlueTEC_4MATIC_Sport-Paket_AMG_%28X_166%29_%E2%80%93_Frontansicht%2C_31._Dezember_2012%2C_D%C3%BCsseldorf.jpg";
     private static final String IMAGE_NAVIGATOR = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/2019_Lincoln_Navigator_%27Reserve%27%2C_front_8.29.20.jpg/1920px-2019_Lincoln_Navigator_%27Reserve%27%2C_front_8.29.20.jpg";
     private static final String IMAGE_ASTRA = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Opel_Astra_1.6_CDTI_ecoFLEX_Dynamic_%28K%29_%E2%80%93_Frontansicht%2C_23._Dezember_2016%2C_D%C3%BCsseldorf_%28cropped%29.jpg/1920px-Opel_Astra_1.6_CDTI_ecoFLEX_Dynamic_%28K%29_%E2%80%93_Frontansicht%2C_23._Dezember_2016%2C_D%C3%BCsseldorf_%28cropped%29.jpg";
+    private static final String IMAGE_ANTARA = "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Opel_Antara_2.0_CDTI_front_20100516.jpg/1280px-Opel_Antara_2.0_CDTI_front_20100516.jpg";
+    private static final String IMAGE_INSIGNIA = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Opel_Insignia_Sports_Tourer_1.5_DIT_Innovation_%28B%29_%E2%80%93_Frontansicht%2C_12._Mai_2017%2C_D%C3%BCsseldorf.jpg/1920px-Opel_Insignia_Sports_Tourer_1.5_DIT_Innovation_%28B%29_%E2%80%93_Frontansicht%2C_12._Mai_2017%2C_D%C3%BCsseldorf.jpg";
     private static final String IMAGE_BATMOBILE = "https://upload.wikimedia.org/wikipedia/en/2/27/Batmobile_%28circa_2018%29.png";
 
     private final BrandRepository brandRepository;
@@ -151,9 +153,15 @@ public class DbInitializer implements CommandLineRunner {
 
         Brand opel = initBrand("Opel");
         Model astra = initModel("Astra", ModelCategory.CAR,IMAGE_ASTRA, 1991, null);
+        Model antara = initModel("Antara", ModelCategory.SUV,IMAGE_ANTARA, 2006, 2015);
+        Model insignia = initModel("Insignia", ModelCategory.CAR,IMAGE_INSIGNIA, 2008, null);
         astra.setBrand(opel);
+        antara.setBrand(opel);
+        insignia.setBrand(opel);
         brandRepository.save(opel);
         modelRepository.save(astra);
+        modelRepository.save(antara);
+        modelRepository.save(insignia);
 
         Brand batmobileBrand = initBrand("BatMobile");
         Model batmobileModel = initModel("Batmobile model", ModelCategory.CAR, IMAGE_BATMOBILE, 1990, 2000);

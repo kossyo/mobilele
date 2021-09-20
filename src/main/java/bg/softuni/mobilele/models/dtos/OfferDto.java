@@ -29,6 +29,8 @@ public class OfferDto extends BaseDto{
 
     private Instant created;
 
+    private String modelSelected;
+
 //    private Instant modified;
 //
 //    public Long getId() {
@@ -130,5 +132,13 @@ public class OfferDto extends BaseDto{
 
     public void setModelDto(ModelDto modelDto) {
         this.model = modelDto;
+    }
+
+    public String getModelSelected() {
+        return modelSelected;
+    }
+
+    public void setModelSelected(String modelSelected) {
+        this.modelSelected = modelSelected;
     }
 }
