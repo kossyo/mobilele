@@ -1,43 +1,38 @@
-package bg.softuni.mobilele.models.entities;
+package bg.softuni.mobilele.models.dtos;
 
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "offers")
-public class Offer extends BaseEntity{
+public class OfferDto {
+    private Long id;
 
-    @Column
     private String description;
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private EngineType engineType;
 
-    @Column
     private String imageUrl;
 
-    @Column
     private int mileage;
 
-    @Column
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
-    @Column
     private TransmissionType transmission;
 
-    @Column
     private int year;
 
-    @ManyToOne
-    private Model model;
+    private ModelDto modelDto;
 
-    @ManyToOne
-    private User seller;
+    private UserDto sellerDto;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDescription() {
         return description;
@@ -95,38 +90,23 @@ public class Offer extends BaseEntity{
         this.year = year;
     }
 
-    public Model getModel() {
-        return model;
+    public ModelDto getModel() {
+        return modelDto;
     }
 
-    public void setSeller(User seller) {
-        this.seller = seller;
+    public void setModel(ModelDto model) {
+        this.modelDto = model;
     }
 
-
-    public User getSeller() {
-        return seller;
+    public UserDto getSeller() {
+        return sellerDto;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
+    public void setSeller(UserDto seller) {
+        this.sellerDto = seller;
     }
 
-    @Override
-    public String toString() {
-        return "Offer{" +
-                "id=" + id +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", description='" + description + '\'' +
-                ", engineType=" + engineType +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", mileage=" + mileage +
-                ", price=" + price +
-                ", transmission=" + transmission +
-                ", year=" + year +
-                ", model=" + model +
-                ", seller=" + seller +
-                '}';
+    public ModelDto getModelDto() {
+        return modelDto;
     }
 }

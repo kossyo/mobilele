@@ -5,6 +5,7 @@ import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.entities.Brand;
 import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.repos.ModelRepository;
+import bg.softuni.mobilele.services.BaseService;
 import bg.softuni.mobilele.services.BrandService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BrandServiceImpl implements BrandService {
+public class BrandServiceImpl extends BaseService implements BrandService {
 
     private final ModelRepository modelRepository;
     private ModelMapper modelMapper;
@@ -47,12 +48,13 @@ public class BrandServiceImpl implements BrandService {
         }
         return brandDtos;
     }
-
-    private static Optional<BrandDto> findBrandDtoByName(String name, List<BrandDto> brandDtos) {
+    private  static Optional<BrandDto> findBrandDtoByName(String name, List<BrandDto> brandDtos) {
 
         return brandDtos
                 .stream()
                 .filter(brandDto -> name.equals(brandDto.getName()))
                 .findAny();
     }
+
+
 }

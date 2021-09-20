@@ -70,7 +70,7 @@
     <div class='row mb-4 d-flex justify-content-around'>
         <div th:each="brand: ${brands}" class="brand-section col-md-5 mr-auto d-flex flex-column">
             <h2>Car brand:
-                <span th:text="${brand.getName()}"></span>
+                <span th:text="${brand.name}"></span>
             </h2>
             <div>Models:
                 <table>
@@ -82,14 +82,13 @@
                         <th>End Year</th>
                         <th>Picture</th>
                     </tr>
-                    <tr th:each="model, iter: ${brand.getModels()}" th:object="${model}">
+                    <tr th:each="model, iter: ${brand.models}" th:object="${model}">
                         <th th:text="${iter.index} + 1"></th>
-                        <th th:text="*{getName()}"></th>
-                        <th th:text="*{getCategory()}"></th>
-                        <th th:text="*{getStartYear()}"></th>
-                        <th th:text="*{getEndYear()}"></th>
-                        <th><img alt="image" th:src="${model.getImageUrl()}"
-                                 class="img-thumbnail rounded"></th>
+                        <th th:text="*{name}"></th>
+                        <th th:text="*{category}"></th>
+                        <th th:text="*{startYear}"></th>
+                        <th th:text="*{endYear}"></th>
+                        <th><img alt="image" th:src="*{imageUrl}" class="img-thumbnail rounded"></th>
                     </tr>
                 </table>
             </div>
