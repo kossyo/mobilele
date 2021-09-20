@@ -2,6 +2,7 @@ package bg.softuni.mobilele.models.entities;
 
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -33,10 +34,10 @@ public class Offer extends BaseEntity{
     @Column
     private int year;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Model model;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User seller;
 
     public String getDescription() {

@@ -3,7 +3,7 @@ package bg.softuni.mobilele.models.dtos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandDto {
+public class BrandDto extends BaseDto{
     private String name;
     private List<ModelDto> models;
 

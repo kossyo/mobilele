@@ -4,9 +4,10 @@ import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
-public class OfferDto {
-    private Long id;
+public class OfferDto extends BaseDto{
+//    private Long id;
 
     private String description;
 
@@ -22,17 +23,21 @@ public class OfferDto {
 
     private int year;
 
-    private ModelDto modelDto;
+    private ModelDto model;
 
-    private UserDto sellerDto;
+    private UserDto seller;
 
-    public Long getId() {
-        return id;
-    }
+    private Instant created;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    private Instant modified;
+//
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getDescription() {
         return description;
@@ -91,22 +96,39 @@ public class OfferDto {
     }
 
     public ModelDto getModel() {
-        return modelDto;
+        return model;
     }
 
     public void setModel(ModelDto model) {
-        this.modelDto = model;
+        this.model = model;
     }
 
     public UserDto getSeller() {
-        return sellerDto;
+        return seller;
     }
 
     public void setSeller(UserDto seller) {
-        this.sellerDto = seller;
+        this.seller = seller;
     }
 
-    public ModelDto getModelDto() {
-        return modelDto;
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+//    public Instant getModified() {
+//        return modified;
+//    }
+//
+//    public void setModified(Instant modified) {
+//        this.modified = modified;
+//    }
+
+    public void setModelDto(ModelDto modelDto) {
+        this.model = modelDto;
     }
 }

@@ -55,20 +55,31 @@ public class OfferServiceImpl implements OfferService {
         return offerDtos;
     }
 
-    private static Optional<OfferDto> findOfferById(Long id, List<OfferDto> offerDtos) {
-        return offerDtos
-                .stream()
-                .filter(offerDto -> id.equals(offerDto.getId()))
-                .findAny();
+    @Override
+    public OfferDto findById(Long id) throws IllegalArgumentException {
+        Optional<Offer> offerEntityOpt = offerRepository.findById(id);
+        OfferDto offerDto = new OfferDto();
+        if (offerEntityOpt.isEmpty()) {
+            throw new IllegalArgumentException("Entity not found");
+        }
+        modelMapper.map(offerEntityOpt.get(), offerDto);
+        return offerDto;
     }
 
-    private static Optional<OfferDto> findBrandDtoById(Long id, List<OfferDto> offerDtos) {
-
-        return offerDtos
-                .stream()
-                .filter(offerDto -> id.equals(offerDto.getId()))
-                .findAny();
-    }
+//    private static Optional<OfferDto> findOfferById(Long id, List<OfferDto> offerDtos) {
+//        return offerDtos
+//                .stream()
+//                .filter(offerDto -> id.equals(offerDto.getId()))
+//                .findAny();
+//    }
+//
+//    private static Optional<OfferDto> findBrandDtoById(Long id, List<OfferDto> offerDtos) {
+//
+//        return offerDtos
+//                .stream()
+//                .filter(offerDto -> id.equals(offerDto.getId()))
+//                .findAny();
+//    }
 
     private static Optional<UserRoleDto> findRoleDtoById(Long id, List<UserRoleDto> roleDtos) {
 

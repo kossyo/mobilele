@@ -2,7 +2,7 @@ package bg.softuni.mobilele.models.dtos;
 
 import java.time.Instant;
 
-public class UserDto {
+public class UserDto extends BaseDto{
     private boolean isActive;
 
     private String firstName;
@@ -13,7 +13,7 @@ public class UserDto {
 
     private String password;
 
-    private Instant modified;
+//    private Instant modified;
 
     private String imageUrl;
 
@@ -57,13 +57,13 @@ public class UserDto {
         this.password = password;
     }
 
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
+//    public Instant getModified() {
+//        return modified;
+//    }
+//
+//    public void setModified(Instant modified) {
+//        this.modified = modified;
+//    }
 
     public String getImageUrl() {
         return imageUrl;

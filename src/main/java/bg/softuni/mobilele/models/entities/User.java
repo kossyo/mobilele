@@ -18,12 +18,12 @@ public class User extends BaseEntity{
 
     private String password;
 
-    private Instant modified;
+//    private Instant modified;
 
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRole> roles;
 
     public boolean isActive() {
@@ -66,13 +66,13 @@ public class User extends BaseEntity{
         this.password = password;
     }
 
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
+//    public Instant getModified() {
+//        return modified;
+//    }
+//
+//    public void setModified(Instant modified) {
+//        this.modified = modified;
+//    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -101,7 +101,6 @@ public class User extends BaseEntity{
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", modified=" + modified +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", roles=" + roles +
                 '}';

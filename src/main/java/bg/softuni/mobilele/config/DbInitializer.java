@@ -96,7 +96,7 @@ public class DbInitializer implements CommandLineRunner {
         kossyo.setFirstName("Konstantin");
         kossyo.setLastName("Koev");
         kossyo.setImageUrl("https://files.worldwildlife.org/wwfcmsprod/images/HERO_Chimpanzee_Uganda/hero_full/5sgqq60jdd_Medium_WW215321.jpg");
-        kossyo.setModified(Instant.now());
+        kossyo.setUpdated(Instant.now());
         kossyo.setUsername("kossyo");
         kossyo.setPassword("password");
         kossyo.setRoles(allUserRoles);
@@ -108,7 +108,7 @@ public class DbInitializer implements CommandLineRunner {
         batman.setFirstName("Bruce");
         batman.setLastName("Wayne");
         batman.setImageUrl("https://e7.pngegg.com/pngimages/899/116/png-clipart-batman-batman-face-the-face-drawing-batman-comics-cat-like-mammal.png");
-        batman.setModified(Instant.now());
+        batman.setUpdated( Instant.now());
         batman.setUsername("batman");
         batman.setPassword("password");
         List<UserRole> batmanRoles = new ArrayList<>();

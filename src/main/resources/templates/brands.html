@@ -87,7 +87,7 @@
                         <th th:text="*{name}"></th>
                         <th th:text="*{category}"></th>
                         <th th:text="*{startYear}"></th>
-                        <th th:text="*{endYear}"></th>
+                        <th th:text="*{endYear}?:'-'"></th>
                         <th><img alt="image" th:src="*{imageUrl}" class="img-thumbnail rounded"></th>
                     </tr>
                 </table>
