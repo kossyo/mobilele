@@ -31,9 +31,16 @@ public class OfferCotroller {
 
     @GetMapping("details/{id}")
     public String getDetails(Model model, @PathVariable Long id) throws IllegalArgumentException {
-        OfferDto offerDto = null;
+        OfferDto offerDto;
         offerDto = offerService.findById(id);
         model.addAttribute("offer", offerDto);
         return "offers/offer-details";
+    }
+
+    @GetMapping("updateOffer/{id}")
+    public String updateOffer(Model model, @PathVariable Long id){
+        OfferDto offerDto = null;
+        offerDto = offerService.findById(id);
+        return "offers/update";
     }
 }
