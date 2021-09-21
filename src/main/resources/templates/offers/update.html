@@ -68,18 +68,20 @@
 
 <div class="container">
     <h2 class="text-center text-white">Update Offer</h2>
-    <form method="POST"
+    <form method="POST" action="/offers/confirmUpdate" th:object="${offer}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
 
             <div class="form-group col-md-6 mb-3">
-                <label class="text-center text-white font-weight-bold" for="model">Model</label>
-                <select id="model" class="form-control" th:field="${offer.modelSelected}">
+                <label class="text-center text-white font-weight-bold" for="modelSelected">Model</label>
+                <select id="modelSelected" name="modelSelected" class="form-control" >
+<!--                        th:field="${offer.modelSelected}"-->
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
                         <option th:each="model: ${models}"
                         th:text="${model.name}"
-                        th:value="${model.name}">Model
+                        th:value="${model.name}"
+                        th:selected="(${model.id} == ${offer.model.id})">Model
                         </option>
                     </optgroup>
                 </select>

@@ -30,11 +30,15 @@ public class ModelServiceImpl implements ModelService {
     public List<ModelDto> findAllByBrandId(Long id) {
         List<ModelDto> modelDtos = new ArrayList<>();
         Optional<Brand> brand = brandRepository.findById(id);
-        List<Model> models = modelRepository.findModelsByBrand(brand.get());
-        for (Model model : models) {
-            ModelDto modelDto = new ModelDto();
-            modelMapper.map(model, modelDto);
-            modelDtos.add(modelDto);
+        List<Model> models = new ArrayList<>();
+
+        if(brand.isPresent()){
+            models = modelRepository.findModelsByBrand(brand.get());
+            for (Model model : models) {
+                ModelDto modelDto = new ModelDto();
+                modelMapper.map(model, modelDto);
+                modelDtos.add(modelDto);
+            }
         }
         return modelDtos;
     }

@@ -6,9 +6,7 @@ import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,5 +46,11 @@ public class OfferCotroller {
         model.addAttribute("offer", offer);
         model.addAttribute("models", models);
         return "offers/update";
+    }
+
+    @PostMapping("confirmUpdate")
+    public String confirmUpdate(Model model, @ModelAttribute OfferDto offerDto){
+
+        return "offers/all-offers";
     }
 }
