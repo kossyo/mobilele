@@ -42,4 +42,16 @@ public class ModelServiceImpl implements ModelService {
         }
         return modelDtos;
     }
+
+    @Override
+    public List<ModelDto> findAll() {
+        List<Model> modelEntities = modelRepository.findAll();
+        List<ModelDto> modelDtos = new ArrayList<>();
+        for (Model modelEntity : modelEntities) {
+            ModelDto modelDto = new ModelDto();
+            modelMapper.map(modelEntity, modelDto);
+            modelDtos.add(modelDto);
+        }
+        return modelDtos;
+    }
 }

@@ -4,6 +4,7 @@ import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import bg.softuni.mobilele.models.views.OfferAddView;
 import bg.softuni.mobilele.models.views.OfferUpdateView;
 import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
@@ -55,6 +56,17 @@ public class OfferCotroller {
         return "offers/all-offers";
     }
 
+    @GetMapping("add")
+    public String add(Model model){
+        model.addAttribute("offerView", initOfferAddView());
+        return "offers/add-offer";
+    }
+
+    @PostMapping("confirmAdd")
+    public String confirmAdd(Model model, OfferAddView offerAddView){
+        offerService.add(offerAddView);
+        return "offers/all-offers";
+    }
 
     private OfferUpdateView initOfferUpdateView(Long id) {
         OfferDto offer = offerService.findById(id);
@@ -63,8 +75,22 @@ public class OfferCotroller {
         OfferUpdateView offerUpdateView = new OfferUpdateView();
         offerUpdateView.setOffer(offer);
         offerUpdateView.setModels(models);
+
         offerUpdateView.setEngineTypes(initEngineTypes());
         offerUpdateView.setTransmissionTypes(initTransmissionTypes());
+
+        return offerUpdateView;
+    }
+
+    private OfferAddView initOfferAddView(){
+
+        OfferAddView offerUpdateView = new OfferAddView();
+        List<ModelDto> models = modelService.findAll();
+
+        offerUpdateView.setModels(models);
+        offerUpdateView.setEngineTypes(initEngineTypes());
+        offerUpdateView.setTransmissionTypes(initTransmissionTypes());
+
         return offerUpdateView;
     }
 

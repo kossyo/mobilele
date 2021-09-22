@@ -3,9 +3,12 @@ package bg.softuni.mobilele.services.impl;
 import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.models.entities.Offer;
+import bg.softuni.mobilele.models.entities.User;
+import bg.softuni.mobilele.models.views.OfferAddView;
 import bg.softuni.mobilele.models.views.OfferUpdateView;
 import bg.softuni.mobilele.repos.ModelRepository;
 import bg.softuni.mobilele.repos.OfferRepository;
+import bg.softuni.mobilele.repos.UserRepository;
 import bg.softuni.mobilele.services.OfferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,11 +23,13 @@ public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
     private final ModelRepository modelRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, ModelMapper modelMapper) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.offerRepository = offerRepository;
         this.modelRepository = modelRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -63,5 +68,19 @@ public class OfferServiceImpl implements OfferService {
         offer.setModel(model);
         offer.setUpdated(Instant.now());
         offerRepository.save(offer);
+    }
+
+    @Override
+    public void add(OfferAddView offerAddView) {
+        Offer offer = new Offer();
+        modelMapper.map(offerAddView, offer);
+        Model model = modelRepository.findModelByName(offerAddView.getModel());
+        User seller = userRepository.getById(1L);
+        offer.setSeller(seller);
+        offer.setModel(model);
+        offer.setCreated(Instant.now());
+        offer.setUpdated(Instant.now());
+        offerRepository.save(offer);
+        System.out.println();
     }
 }

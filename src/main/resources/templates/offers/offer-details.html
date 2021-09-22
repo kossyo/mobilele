@@ -86,8 +86,8 @@
                     <div class="card-text" th:text="'Transmission type: ' + *{transmission}"><span></span></div>
                     <div class="card-text" th:text="'Offer created: ' + *{created}"><span></span></div>
                     <div class="card-text" th:text="'Offer updated: ' + ((*{updated})?:'-')"><span></span></div>
-                    <div class="card-text" th:text="'Seller: ' + *{seller.firstName} + ' ' + *{seller.lastName} "><span></span>
-                    </div>
+                    <div class="card-text" th:text="'Seller: ' + *{seller.firstName} + ' ' + *{seller.lastName} "><span></span></div>
+                    <div class="card-text" th:text="'Description: ' + *{description} "><span></span></div>
                 </li>
             </ul>
             <div class="card-body">

@@ -38,6 +38,7 @@ public class Offer extends BaseEntity{
     private Model model;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private User seller;
 
     public String getDescription() {
