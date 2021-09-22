@@ -14,4 +14,6 @@ public interface OfferService {
     void update(OfferUpdateView offerUpdateView);
 
     void add(OfferAddView offerAddView);
+
+    void delete(Long id);
 }

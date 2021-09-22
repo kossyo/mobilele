@@ -56,6 +56,13 @@ public class OfferCotroller {
         return "offers/all-offers";
     }
 
+    @GetMapping("deleteOffer/{id}")
+    public String deleteOffer(Model model, @PathVariable Long id){
+        offerService.delete(id);
+        return "offers/all-offers";
+    }
+
+
     @GetMapping("add")
     public String add(Model model){
         model.addAttribute("offerView", initOfferAddView());

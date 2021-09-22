@@ -83,4 +83,14 @@ public class OfferServiceImpl implements OfferService {
         offerRepository.save(offer);
         System.out.println();
     }
+
+    @Override
+    public void delete(Long id) {
+        Optional<Offer> offerOpt = offerRepository.findById(id);
+        if (offerOpt.isEmpty()){
+            throw new IllegalArgumentException("Entity not found");
+        }
+        Offer offer = offerOpt.get();
+        offerRepository.delete(offer);
+    }
 }
