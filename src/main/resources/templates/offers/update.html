@@ -75,13 +75,12 @@
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="modelSelected">Model</label>
                 <select id="modelSelected" name="modelSelected" class="form-control" >
-<!--                        th:field="${offer.modelSelected}"-->
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
                         <option th:each="model: ${models}"
                         th:text="${model.name}"
                         th:value="${model.name}"
-                        th:selected="(${model.id} == ${offer.model.id})">Model
+                        th:selected="(${model.id} == *{model.id})">Model
                         </option>
                     </optgroup>
                 </select>
@@ -91,7 +90,7 @@
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label for="price" class="text-white font-weight-bold">Price</label>
-                <input id="price" type="number" min="0" step="100" class="form-control"
+                <input id="price" type="number" th:value="*{price}" min="0" step="100" class="form-control"
                        placeholder="Suggested price"/>
                 <p class="errors alert alert-danger">
                     Suggested price is required.
