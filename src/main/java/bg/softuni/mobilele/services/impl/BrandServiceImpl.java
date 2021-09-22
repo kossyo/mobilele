@@ -18,7 +18,7 @@ import java.util.Optional;
 public class BrandServiceImpl extends BaseService implements BrandService {
 
     private final ModelRepository modelRepository;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public BrandServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper, ModelMapper modelMapper1) {
         this.modelRepository = modelRepository;

@@ -51,7 +51,7 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initRoles() {
-        if(!userRoleRepository.findAll().isEmpty()){
+        if(userRoleRepository.count() > 0){
             return;
         }
         UserRole adminUserRole = new UserRole(UserRoleType.ADMIN);
@@ -62,7 +62,7 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initOffers() {
-        if(!offerRepository.findAll().isEmpty()){
+        if(offerRepository.count() > 0){
             return;
         }
         Offer astraOffer = new Offer();
@@ -98,7 +98,7 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initUsers() {
-        if(!userRepository.findAll().isEmpty()){
+        if(userRepository.count() > 0){
             return;
         }
         List<UserRole> allUserRoles = this.userRoleRepository.findAll();
@@ -130,7 +130,7 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initCarsAndModels() {
-        if(!brandRepository.findAll().isEmpty() || !modelRepository.findAll().isEmpty()){
+        if(brandRepository.count() > 0 || modelRepository.count() > 0){
             return;
         }
         Brand nissan = initBrand("Nissan");

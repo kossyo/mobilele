@@ -51,7 +51,7 @@ public class OfferCotroller {
     }
 
     @PostMapping("confirmUpdate")
-    public String confirmUpdate(Model model, @ModelAttribute OfferUpdateView offerUpdateView) {
+    public String confirmUpdate(@ModelAttribute OfferUpdateView offerUpdateView) {
         offerService.update(offerUpdateView);
         return "offers/all-offers";
     }
@@ -70,7 +70,7 @@ public class OfferCotroller {
     }
 
     @PostMapping("confirmAdd")
-    public String confirmAdd(Model model, OfferAddView offerAddView){
+    public String confirmAdd(OfferAddView offerAddView){
         offerService.add(offerAddView);
         return "offers/all-offers";
     }
