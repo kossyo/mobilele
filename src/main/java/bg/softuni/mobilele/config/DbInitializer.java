@@ -51,6 +51,9 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initRoles() {
+        if(!userRoleRepository.findAll().isEmpty()){
+            return;
+        }
         UserRole adminUserRole = new UserRole(UserRoleType.ADMIN);
         UserRole userUserRole = new UserRole(UserRoleType.USER);
 
@@ -59,6 +62,9 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initOffers() {
+        if(!offerRepository.findAll().isEmpty()){
+            return;
+        }
         Offer astraOffer = new Offer();
         User kossyo = userRepository.findUserByUsername("kossyo");
         Model astra = modelRepository.findModelByName("Astra");
@@ -92,6 +98,9 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initUsers() {
+        if(!userRepository.findAll().isEmpty()){
+            return;
+        }
         List<UserRole> allUserRoles = this.userRoleRepository.findAll();
         User kossyo = new User();
         kossyo.setActive(true);
@@ -121,6 +130,9 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initCarsAndModels() {
+        if(!brandRepository.findAll().isEmpty() || !modelRepository.findAll().isEmpty()){
+            return;
+        }
         Brand nissan = initBrand("Nissan");
         Model xtrail = initModel("X-Trail", ModelCategory.SUV, IMAGE_XTRAIL, 2000, null);
         Model pathfinder = initModel("Pathfinder", ModelCategory.SUV, IMAGE_PATHFINDER, 1985, null);
