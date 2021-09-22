@@ -1,20 +1,16 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.models.dtos.BrandDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.dtos.UserDto;
-import bg.softuni.mobilele.models.dtos.UserRoleDto;
+import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.models.entities.Offer;
-import bg.softuni.mobilele.models.entities.User;
-import bg.softuni.mobilele.models.entities.UserRole;
+import bg.softuni.mobilele.models.views.OfferUpdateView;
 import bg.softuni.mobilele.repos.ModelRepository;
 import bg.softuni.mobilele.repos.OfferRepository;
-import bg.softuni.mobilele.repos.UserRepository;
-import bg.softuni.mobilele.repos.UserRoleRepository;
 import bg.softuni.mobilele.services.OfferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,16 +19,12 @@ import java.util.Optional;
 public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
-    private final UserRepository userRepository;
     private final ModelRepository modelRepository;
-    private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
 
-    public OfferServiceImpl(OfferRepository offerRepository, UserRepository userRepository, ModelRepository modelRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, ModelMapper modelMapper) {
         this.offerRepository = offerRepository;
-        this.userRepository = userRepository;
         this.modelRepository = modelRepository;
-        this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -59,11 +51,17 @@ public class OfferServiceImpl implements OfferService {
         return offerDto;
     }
 
-    private static Optional<UserRoleDto> findRoleDtoById(Long id, List<UserRoleDto> roleDtos) {
-
-        return roleDtos
-                .stream()
-                .filter(roleDto -> id.equals(roleDto.getId()))
-                .findAny();
+    @Override
+    public void update(OfferUpdateView offerUpdateView) {
+        Optional<Offer> offerOpt = offerRepository.findById(offerUpdateView.getOfferId());
+        if (offerOpt.isEmpty()) {
+            throw new IllegalArgumentException("Entity not found");
+        }
+        Offer offer = offerOpt.get();
+        modelMapper.map(offerUpdateView, offer);
+        Model model = modelRepository.findModelByName(offerUpdateView.getModel());
+        offer.setModel(model);
+        offer.setUpdated(Instant.now());
+        offerRepository.save(offer);
     }
 }

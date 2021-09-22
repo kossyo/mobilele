@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 public class OfferDto extends BaseDto{
-//    private Long id;
 
     private String description;
 
@@ -28,18 +27,6 @@ public class OfferDto extends BaseDto{
     private UserDto seller;
 
     private Instant created;
-
-    private String modelSelected;
-
-//    private Instant modified;
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
 
     public String getDescription() {
         return description;
@@ -113,32 +100,11 @@ public class OfferDto extends BaseDto{
         this.seller = seller;
     }
 
-
     public Instant getCreated() {
         return created;
     }
 
     public void setCreated(Instant created) {
         this.created = created;
-    }
-
-//    public Instant getModified() {
-//        return modified;
-//    }
-//
-//    public void setModified(Instant modified) {
-//        this.modified = modified;
-//    }
-
-    public void setModelDto(ModelDto modelDto) {
-        this.model = modelDto;
-    }
-
-    public String getModelSelected() {
-        return modelSelected;
-    }
-
-    public void setModelSelected(String modelSelected) {
-        this.modelSelected = modelSelected;
     }
 }
