@@ -12,11 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("offers")
+@RequestMapping("/offers/")
 public class OfferCotroller {
 
     private final OfferService offerService;
@@ -29,10 +31,15 @@ public class OfferCotroller {
     }
 
     @GetMapping("all")
-    public String allOffers(Model model) {
+    public String allOffers(Model model,
+                            @CookieValue(value = "theCookie", required = false) String valSelFromCookie) {
 
         List<OfferDto> offers = offerService.findAllOffers();
         model.addAttribute("offers", offers);
+        model.addAttribute("valSelFromCookie", valSelFromCookie);
+        List<String> selectOptions = List.of("bg", "en", "nl", "sr");
+        model.addAttribute("selectOptions", selectOptions);
+
         return "offers/all-offers";
     }
 
@@ -57,22 +64,31 @@ public class OfferCotroller {
     }
 
     @GetMapping("deleteOffer/{id}")
-    public String deleteOffer(Model model, @PathVariable Long id){
+    public String deleteOffer(Model model, @PathVariable Long id) {
         offerService.delete(id);
         return "offers/all-offers";
     }
 
 
     @GetMapping("add")
-    public String add(Model model){
+    public String add(Model model) {
         model.addAttribute("offerView", initOfferAddView());
         return "offers/add-offer";
     }
 
     @PostMapping("confirmAdd")
-    public String confirmAdd(OfferAddView offerAddView){
+    public String confirmAdd(OfferAddView offerAddView) {
         offerService.add(offerAddView);
         return "offers/all-offers";
+    }
+
+    @PostMapping("cookie")
+    public String cookie(HttpServletResponse response, @RequestParam String valSelected) {
+        Cookie cookie = new Cookie("theCookie", valSelected);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+
+        return "redirect:/offers/all";
     }
 
     private OfferUpdateView initOfferUpdateView(Long id) {
@@ -89,7 +105,7 @@ public class OfferCotroller {
         return offerUpdateView;
     }
 
-    private OfferAddView initOfferAddView(){
+    private OfferAddView initOfferAddView() {
 
         OfferAddView offerUpdateView = new OfferAddView();
         List<ModelDto> models = modelService.findAll();
