@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,13 +33,19 @@ public class OfferCotroller {
 
     @GetMapping("all")
     public String allOffers(Model model,
-                            @CookieValue(value = "theCookie", required = false) String valSelFromCookie) {
+                            HttpSession session) {
 
         List<OfferDto> offers = offerService.findAllOffers();
         model.addAttribute("offers", offers);
-        model.addAttribute("valSelFromCookie", valSelFromCookie);
         List<String> selectOptions = List.of("bg", "en", "nl", "sr");
         model.addAttribute("selectOptions", selectOptions);
+
+        //managed with session
+        String valSelFromCookie = (String) session.getAttribute("valSelFromCookie");// not a cookie, just a wrong var name
+        if (valSelFromCookie == null) {
+            valSelFromCookie = "nl";
+        }
+        model.addAttribute("valSelFromCookie", valSelFromCookie);
 
         return "offers/all-offers";
     }
@@ -83,11 +90,8 @@ public class OfferCotroller {
     }
 
     @PostMapping("cookie")
-    public String cookie(HttpServletResponse response, @RequestParam String valSelected) {
-        Cookie cookie = new Cookie("theCookie", valSelected);
-        cookie.setSecure(true);
-        response.addCookie(cookie);
-
+    public String cookie(HttpServletResponse response, @RequestParam String valSelected, HttpSession session) {
+        session.setAttribute("valSelFromCookie", valSelected);//this is not a cookie at all, just a wrong var name
         return "redirect:/offers/all";
     }
 
