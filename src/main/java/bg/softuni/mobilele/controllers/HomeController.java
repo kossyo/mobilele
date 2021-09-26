@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping("")
     public String home(){
-        return "indexx";
+        return "index";
     }
 }

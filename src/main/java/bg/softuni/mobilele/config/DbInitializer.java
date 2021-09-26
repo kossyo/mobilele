@@ -3,16 +3,18 @@ package bg.softuni.mobilele.config;
 import bg.softuni.mobilele.models.entities.*;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import bg.softuni.mobilele.models.entities.enums.UserRoleType;
+import bg.softuni.mobilele.models.entities.enums.RoleType;
 import bg.softuni.mobilele.repos.*;
 import bg.softuni.mobilele.models.entities.enums.ModelCategory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DbInitializer implements CommandLineRunner {
@@ -32,14 +34,18 @@ public class DbInitializer implements CommandLineRunner {
     private final ModelRepository modelRepository;
     private final UserRepository userRepository;
     private final OfferRepository offerRepository;
-    private final UserRoleRepository userRoleRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DbInitializer(BrandRepository brandRepository, ModelRepository modelRepository, UserRepository userRepository, OfferRepository offerRepository, UserRoleRepository userRoleRepository) {
+    public DbInitializer(BrandRepository brandRepository, ModelRepository modelRepository,
+                         UserRepository userRepository, OfferRepository offerRepository,
+                         RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.brandRepository = brandRepository;
         this.modelRepository = modelRepository;
         this.userRepository = userRepository;
         this.offerRepository = offerRepository;
-        this.userRoleRepository = userRoleRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -51,14 +57,14 @@ public class DbInitializer implements CommandLineRunner {
     }
 
     private void initRoles() {
-        if(userRoleRepository.count() > 0){
+        if(roleRepository.count() > 0){
             return;
         }
-        UserRole adminUserRole = new UserRole(UserRoleType.ADMIN);
-        UserRole userUserRole = new UserRole(UserRoleType.USER);
+        Role adminRole = new Role(RoleType.ADMIN);
+        Role userRole = new Role(RoleType.USER);
 
-        userRoleRepository.save(adminUserRole);
-        userRoleRepository.save(userUserRole);
+        roleRepository.save(adminRole);
+        roleRepository.save(userRole);
     }
 
     private void initOffers() {
@@ -66,7 +72,11 @@ public class DbInitializer implements CommandLineRunner {
             return;
         }
         Offer astraOffer = new Offer();
-        User kossyo = userRepository.findUserByUsername("kossyo");
+        Optional<User> kossyoOpt = userRepository.findUserByUsername("kossyo");
+        if(kossyoOpt.isEmpty()){
+            return;
+        }
+        User kossyo = kossyoOpt.get();
         Model astra = modelRepository.findModelByName("Astra");
         astraOffer.setSeller(kossyo);
         astraOffer.setModel(astra);
@@ -81,7 +91,11 @@ public class DbInitializer implements CommandLineRunner {
         offerRepository.save(astraOffer);
 
         Offer batMobileOffer = new Offer();
-        User batman = this.userRepository.findUserByUsername("batman");
+        Optional<User> batmanOpt = this.userRepository.findUserByUsername("batman");
+        if (batmanOpt.isEmpty()){
+            return;
+        }
+        User batman = batmanOpt.get();
         Model batmobile = modelRepository.findModelByName("Batmobile model");
         batMobileOffer.setSeller(batman);
         batMobileOffer.setModel(batmobile);
@@ -101,7 +115,7 @@ public class DbInitializer implements CommandLineRunner {
         if(userRepository.count() > 0){
             return;
         }
-        List<UserRole> allUserRoles = this.userRoleRepository.findAll();
+        List<Role> allRoles = this.roleRepository.findAll();
         User kossyo = new User();
         kossyo.setActive(true);
         kossyo.setFirstName("Konstantin");
@@ -109,8 +123,8 @@ public class DbInitializer implements CommandLineRunner {
         kossyo.setImageUrl("https://files.worldwildlife.org/wwfcmsprod/images/HERO_Chimpanzee_Uganda/hero_full/5sgqq60jdd_Medium_WW215321.jpg");
         kossyo.setUpdated(Instant.now());
         kossyo.setUsername("kossyo");
-        kossyo.setPassword("password");
-        kossyo.setRoles(allUserRoles);
+        kossyo.setPassword(passwordEncoder.encode("1234"));
+        kossyo.setRoles(allRoles);
         setTimeInstances(kossyo);
         userRepository.save(kossyo);
 
@@ -121,9 +135,9 @@ public class DbInitializer implements CommandLineRunner {
         batman.setImageUrl("https://e7.pngegg.com/pngimages/899/116/png-clipart-batman-batman-face-the-face-drawing-batman-comics-cat-like-mammal.png");
         batman.setUpdated( Instant.now());
         batman.setUsername("batman");
-        batman.setPassword("password");
-        List<UserRole> batmanRoles = new ArrayList<>();
-        batmanRoles.add(userRoleRepository.findUserRoleByRole(UserRoleType.USER));
+        batman.setPassword(passwordEncoder.encode("1234"));
+        List<Role> batmanRoles = new ArrayList<>();
+        batmanRoles.add(roleRepository.findUserRoleByRole(RoleType.USER));
         batman.setRoles(batmanRoles);
         setTimeInstances(batman);
         userRepository.save(batman);

@@ -1,17 +1,13 @@
-package bg.softuni.mobilele.models.views;
+package bg.softuni.mobilele.models.bindings;
 
 import bg.softuni.mobilele.models.dtos.ModelDto;
-import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class OfferUpdateView {
-
-    //give
-    OfferDto offer;
+public class OfferAddView {
 
     //give
     List<ModelDto> models;
@@ -21,8 +17,6 @@ public class OfferUpdateView {
 
     //give
     List<TransmissionType> transmissionTypes;
-
-    private Long offerId;
 
     private String description;
 
@@ -102,22 +96,6 @@ public class OfferUpdateView {
 
     public void setModel(String model) {
         this.model = model;
-    }
-
-    public Long getOfferId() {
-        return offerId;
-    }
-
-    public void setOfferId(Long offerId) {
-        this.offerId = offerId;
-    }
-
-    public OfferDto getOffer() {
-        return offer;
-    }
-
-    public void setOffer(OfferDto offer) {
-        this.offer = offer;
     }
 
     public List<ModelDto> getModels() {

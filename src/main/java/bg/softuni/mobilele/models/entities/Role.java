@@ -1,25 +1,25 @@
 package bg.softuni.mobilele.models.entities;
 
-import bg.softuni.mobilele.models.entities.enums.UserRoleType;
+import bg.softuni.mobilele.models.entities.enums.RoleType;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class UserRole {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private UserRoleType role;
+    private RoleType role;
 
-    public UserRole(UserRoleType userRoleType){
-        this.role = userRoleType;
+    public Role(RoleType roleType){
+        this.role = roleType;
     }
 
-    public UserRole() {
+    public Role() {
 
     }
 
@@ -31,11 +31,11 @@ public class UserRole {
         this.id = id;
     }
 
-    public UserRoleType getRole() {
+    public RoleType getRole() {
         return role;
     }
 
-    public void setRole(UserRoleType role) {
+    public void setRole(RoleType role) {
         this.role = role;
     }
 

@@ -1,8 +1,8 @@
 package bg.softuni.mobilele.services;
 
 import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.views.OfferAddView;
-import bg.softuni.mobilele.models.views.OfferUpdateView;
+import bg.softuni.mobilele.models.bindings.OfferAddView;
+import bg.softuni.mobilele.models.bindings.OfferUpdateView;
 
 import java.util.List;
 

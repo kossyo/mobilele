@@ -4,15 +4,14 @@ import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import bg.softuni.mobilele.models.views.OfferAddView;
-import bg.softuni.mobilele.models.views.OfferUpdateView;
+import bg.softuni.mobilele.models.bindings.OfferAddView;
+import bg.softuni.mobilele.models.bindings.OfferUpdateView;
 import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;

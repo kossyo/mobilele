@@ -18,13 +18,16 @@ public class User extends BaseEntity{
 
     private String password;
 
-//    private Instant modified;
-
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<UserRole> roles;
+    private List<Role> roles;
+
+    public User(){
+        super.setCreated(Instant.now());
+        super.setUpdated(Instant.now());
+    }
 
     public boolean isActive() {
         return isActive;
@@ -66,14 +69,6 @@ public class User extends BaseEntity{
         this.password = password;
     }
 
-//    public Instant getModified() {
-//        return modified;
-//    }
-//
-//    public void setModified(Instant modified) {
-//        this.modified = modified;
-//    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -82,11 +77,11 @@ public class User extends BaseEntity{
         this.imageUrl = imageUrl;
     }
 
-    public List<UserRole> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<UserRole> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -100,7 +95,7 @@ public class User extends BaseEntity{
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + "N/A" + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", roles=" + roles +
                 '}';
