@@ -37,25 +37,21 @@ public class UserController {
 
     @GetMapping("login")
     public String login(Model model) {
-        if (!model.containsAttribute("userLoginBindingModel")) {
-            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+        if (!model.containsAttribute("username")) {
+            model.addAttribute("username", "");
         }
         return "auth-login";
     }
 
     @PostMapping("confirmLogin")
-    public String confirmLogin(Model model, @ModelAttribute UserLoginBindingModel userLoginBindingModel
-            , BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String confirmLogin(@ModelAttribute UserLoginBindingModel userLoginBindingModel
+            , RedirectAttributes redirectAttributes) {
 
         if (!userService.login(userLoginBindingModel)) {
-            userLoginBindingModel.setPassword(null);
-            model.addAttribute("userLoginBindingModel", userLoginBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
-            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
-
+            redirectAttributes.addFlashAttribute("username", userLoginBindingModel.getUsername());
             return "redirect:/users/login";
         }
-        return "brands";
+        return "redirect:/brands/all";
     }
 
     @GetMapping("register")
