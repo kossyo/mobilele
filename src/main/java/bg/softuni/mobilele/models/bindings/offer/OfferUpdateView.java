@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.models.bindings;
+package bg.softuni.mobilele.models.bindings.offer;
 
 import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;

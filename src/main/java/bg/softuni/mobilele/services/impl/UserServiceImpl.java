@@ -1,5 +1,6 @@
 package bg.softuni.mobilele.services.impl;
 
+import bg.softuni.mobilele.models.bindings.user.UserLoginBindingModel;
 import bg.softuni.mobilele.models.entities.Role;
 import bg.softuni.mobilele.models.entities.User;
 import bg.softuni.mobilele.models.entities.enums.RoleType;
@@ -48,5 +49,24 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public boolean login(UserLoginBindingModel userLoginBindingModel) {
+
+        Optional<User> userOpt = findUserByUsername(userLoginBindingModel.getUsername());
+        if(userOpt.isEmpty()){
+            return false;
+        }
+
+        return passwordEncoder
+                .matches(
+                        userLoginBindingModel.getPassword(),
+                        userOpt.get().getPassword()
+                );
+    }
+
+    private Optional<User> findUserByUsername(String username){
+        return userRepository.findUserByUsername(username);
     }
 }

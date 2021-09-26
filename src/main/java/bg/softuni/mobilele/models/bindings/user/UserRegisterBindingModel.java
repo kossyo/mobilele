@@ -1,4 +1,4 @@
-package bg.softuni.mobilele.models.bindings;
+package bg.softuni.mobilele.models.bindings.user;
 
 public class UserRegisterBindingModel {
 
@@ -9,8 +9,6 @@ public class UserRegisterBindingModel {
     private String username;
 
     private String password;
-
-//    private List<String> roles;
 
     private String rolesSelected;
 
@@ -45,14 +43,6 @@ public class UserRegisterBindingModel {
     public void setPassword(String password) {
         this.password = password;
     }
-//
-//    public List<String> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(List<String> roles) {
-//        this.roles = roles;
-//    }
 
     public String getRolesSelected() {
         return rolesSelected;
