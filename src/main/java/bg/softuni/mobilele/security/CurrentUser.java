@@ -10,7 +10,7 @@ import java.util.List;
 //todo: replace all 'action'-s by 'th:action'-s
 //todo: remove the trick with nulling confirmPassword
 // and try to do it with flashattribute and keep <>their text<>
-// use validation when adding an offer
+// use validation when updating an offer
 //todo: check whether error mssgs dissapear when editing an offer
 
 @Component("currentUser")

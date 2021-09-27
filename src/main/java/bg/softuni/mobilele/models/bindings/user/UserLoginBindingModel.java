@@ -1,5 +1,7 @@
 package bg.softuni.mobilele.models.bindings.user;
 
+import org.hibernate.validator.constraints.Length;
+
 public class UserLoginBindingModel {
 
     private String username;

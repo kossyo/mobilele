@@ -31,7 +31,7 @@
 
         </div>
         
-        <p class="errors alert alert-danger">
+        <p th:unless="${invalidCredentials}" class="errors alert alert-danger">
             Invalid username or password.
         </p>
 
