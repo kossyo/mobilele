@@ -81,7 +81,6 @@ public class OfferServiceImpl implements OfferService {
         offer.setCreated(Instant.now());
         offer.setUpdated(Instant.now());
         offerRepository.save(offer);
-        System.out.println();
     }
 
     @Override

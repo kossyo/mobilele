@@ -3,35 +3,42 @@ package bg.softuni.mobilele.models.bindings.offer;
 import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 public class OfferAddView {
 
-    //give
     List<ModelDto> models;
 
-    //give
     List<EngineType> engineTypes;
 
-    //give
     List<TransmissionType> transmissionTypes;
 
+    @Length(min = 2)
     private String description;
 
+    @Length(min = 1)
     private String engineType;
 
+    @Length(min = 1)
     private String imageUrl;
 
+    @NotNull
     private int mileage;
 
+    @NotNull
     private BigDecimal price;
 
+    @Length(min = 1)
     private String transmissionType;
 
+    @NotNull
     private int year;
 
+    @Length(min = 1)
     private String model;
 
     public String getDescription() {

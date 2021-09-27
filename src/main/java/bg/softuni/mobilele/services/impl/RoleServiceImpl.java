@@ -28,12 +28,6 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<String> findAllAsStrings() {
 
-//        List<String> roles = new ArrayList<>();
-//        for (Role role : roleRepository.findAll()) {
-//            roles.add(role.getRole().toString());
-//        }
-//        return roles;
-
         //todo: replace by a Jpa projection interface
         return roleRepository
                 .findAll()

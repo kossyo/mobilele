@@ -10,10 +10,13 @@ import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +86,12 @@ public class OfferCotroller {
     }
 
     @PostMapping("confirmAdd")
-    public String confirmAdd(OfferAddView offerAddView) {
+    public String confirmAdd(@Valid @ModelAttribute OfferAddView offerAddView,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            return "redirect:/offers/add";
+        }
         offerService.add(offerAddView);
         return "offers/all-offers";
     }
