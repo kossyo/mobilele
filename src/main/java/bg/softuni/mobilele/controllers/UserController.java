@@ -41,15 +41,20 @@ public class UserController {
         if (!model.containsAttribute("username")) {
             model.addAttribute("username", "");
             model.addAttribute("invalidCredentials", true);
-
         }
         return "auth-login";
     }
 
     @PostMapping("confirmLogin")
-    public String confirmLogin(@Valid @ModelAttribute UserLoginBindingModel userLoginBindingModel
+    public String confirmLogin(@Valid @ModelAttribute UserLoginBindingModel userLoginBindingModel,
+                               BindingResult bindingResult
             , RedirectAttributes redirectAttributes) {
 
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
+            return "redirect:/users/login";
+        }
 
         if (!userService.login(userLoginBindingModel)) {
             redirectAttributes.addFlashAttribute("username", userLoginBindingModel.getUsername());

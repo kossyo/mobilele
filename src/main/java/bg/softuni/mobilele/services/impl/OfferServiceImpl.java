@@ -1,14 +1,20 @@
 package bg.softuni.mobilele.services.impl;
 
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
+import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.entities.Brand;
 import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.models.entities.Offer;
 import bg.softuni.mobilele.models.entities.User;
-import bg.softuni.mobilele.models.bindings.offer.OfferAddView;
-import bg.softuni.mobilele.models.bindings.offer.OfferUpdateView;
+import bg.softuni.mobilele.models.bindings.offer.OfferAddBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.OfferUpdateBindingModel;
+import bg.softuni.mobilele.models.entities.enums.EngineType;
+import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 import bg.softuni.mobilele.repos.ModelRepository;
 import bg.softuni.mobilele.repos.OfferRepository;
 import bg.softuni.mobilele.repos.UserRepository;
+import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,12 +31,14 @@ public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final ModelRepository modelRepository;
     private final UserRepository userRepository;
+    private final ModelService modelService;
     private final ModelMapper modelMapper;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, UserRepository userRepository, ModelService modelService, ModelMapper modelMapper) {
         this.offerRepository = offerRepository;
         this.modelRepository = modelRepository;
         this.userRepository = userRepository;
+        this.modelService = modelService;
         this.modelMapper = modelMapper;
     }
 
@@ -57,21 +66,21 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void update(OfferUpdateView offerUpdateView) {
-        Optional<Offer> offerOpt = offerRepository.findById(offerUpdateView.getOfferId());
+    public void update(OfferUpdateBindingModel offerUpdateBindingModel) {
+        Optional<Offer> offerOpt = offerRepository.findById(offerUpdateBindingModel.getOfferId());
         if (offerOpt.isEmpty()) {
             throw new IllegalArgumentException("Entity not found");
         }
         Offer offer = offerOpt.get();
-        modelMapper.map(offerUpdateView, offer);
-        Model model = modelRepository.findModelByName(offerUpdateView.getModel());
+        modelMapper.map(offerUpdateBindingModel, offer);
+        Model model = modelRepository.findModelByName(offerUpdateBindingModel.getModel());
         offer.setModel(model);
         offer.setUpdated(Instant.now());
         offerRepository.save(offer);
     }
 
     @Override
-    public void add(OfferAddView offerAddView) {
+    public void add(OfferAddBindingModel offerAddView) {
         Offer offer = new Offer();
         modelMapper.map(offerAddView, offer);
         Model model = modelRepository.findModelByName(offerAddView.getModel());
@@ -86,10 +95,86 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void delete(Long id) {
         Optional<Offer> offerOpt = offerRepository.findById(id);
-        if (offerOpt.isEmpty()){
+        if (offerOpt.isEmpty()) {
             throw new IllegalArgumentException("Entity not found");
         }
         Offer offer = offerOpt.get();
         offerRepository.delete(offer);
+    }
+
+    @Override
+    public UpdateOfferViewModel initOfferUpdateViewModelAfterRedirect(OfferUpdateBindingModel offerUpdateBindingModel) {
+
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        UpdateOfferViewModel updateOfferViewModel = modelMapper.map(offerUpdateBindingModel, UpdateOfferViewModel.class);
+
+        modelMapper.getConfiguration().setAmbiguityIgnored(false);
+
+
+        updateOfferViewModel.setOfferId(offerUpdateBindingModel != null ? offerUpdateBindingModel.getOfferId() : null);
+        Long offerId = Objects.requireNonNull(offerUpdateBindingModel).getOfferId();
+        if (offerId == null) {
+            throw new IllegalArgumentException("offerId cannot be null");
+        }
+        Optional<Offer> offerOpt = offerRepository.findById(offerId);
+        if (offerOpt.isEmpty()){
+            throw new IllegalArgumentException("Offer entity not found");
+        }
+        Brand brand = offerOpt.get().getModel().getBrand();
+
+        List<ModelDto> models = modelService.findAllByBrandId(brand.getId());
+
+        updateOfferViewModel.setModels(models);
+
+        updateOfferViewModel.setEngineTypes(initEngineTypes());
+        updateOfferViewModel.setTransmissionTypes(initTransmissionTypes());
+        return updateOfferViewModel;
+    }
+
+    @Override
+    public OfferAddBindingModel initOfferAddBindingModel() {
+
+        OfferAddBindingModel offerUpdateView = new OfferAddBindingModel();
+        List<ModelDto> models = modelService.findAll();
+
+        offerUpdateView.setModels(models);
+        offerUpdateView.setEngineTypes(initEngineTypes());
+        offerUpdateView.setTransmissionTypes(initTransmissionTypes());
+
+        return offerUpdateView;
+    }
+
+    @Override
+    public List<TransmissionType> initTransmissionTypes() {
+        List<TransmissionType> transmissionTypes = new ArrayList<>();
+        transmissionTypes.add(TransmissionType.AUTOMATIC);
+        transmissionTypes.add(TransmissionType.MANUAL);
+        return transmissionTypes;
+    }
+
+    @Override
+    public List<EngineType> initEngineTypes() {
+        List<EngineType> engineTypes = new ArrayList<>();
+        engineTypes.add(EngineType.GASOLINE);
+        engineTypes.add(EngineType.DIESEL);
+        engineTypes.add(EngineType.ELECTRIC);
+        engineTypes.add(EngineType.HYBRID);
+        return engineTypes;
+    }
+
+
+    @Override
+    public UpdateOfferViewModel initUpdateOfferViewModelFromDb(Long id) {
+        OfferDto offer = findById(id);
+        UpdateOfferViewModel updateOfferViewModel = modelMapper.map(offer, UpdateOfferViewModel.class);
+
+        List<ModelDto> models = modelService.findAllByBrandId(offer.getModel().getBrand().getId());
+
+        updateOfferViewModel.setModels(models);
+
+        updateOfferViewModel.setEngineTypes(initEngineTypes());
+        updateOfferViewModel.setTransmissionTypes(initTransmissionTypes());
+        updateOfferViewModel.setModel(offer.getModel().getName());
+        return updateOfferViewModel;
     }
 }

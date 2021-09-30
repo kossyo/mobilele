@@ -3,43 +3,40 @@ package bg.softuni.mobilele.models.bindings.offer;
 import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class OfferAddView {
+public class UpdateOfferViewModel {
 
-    List<ModelDto> models;
+    private long offerId;
 
-    List<EngineType> engineTypes;
-
-    List<TransmissionType> transmissionTypes;
-
-    @Length(min = 2)
     private String description;
 
-    @Length(min = 1)
-    private String engineType;
+    private EngineType engineType;
 
-    @Length(min = 1)
     private String imageUrl;
 
-    @NotNull
     private int mileage;
 
-    @NotNull
     private BigDecimal price;
 
-    @Length(min = 1)
-    private String transmissionType;
+    private TransmissionType transmissionType;
 
-    @NotNull
     private int year;
-
-    @Length(min = 1)
     private String model;
+
+    private List<ModelDto> models;
+    private List<TransmissionType> transmissionTypes;
+    private List<EngineType> engineTypes;
+
+    public long getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(long offerId) {
+        this.offerId = offerId;
+    }
 
     public String getDescription() {
         return description;
@@ -49,8 +46,12 @@ public class OfferAddView {
         this.description = description;
     }
 
-    public String getEngineType() {
+    public EngineType getEngineType() {
         return engineType;
+    }
+
+    public void setEngineType(EngineType engineType) {
+        this.engineType = engineType;
     }
 
     public String getImageUrl() {
@@ -77,24 +78,20 @@ public class OfferAddView {
         this.price = price;
     }
 
+    public TransmissionType getTransmissionType() {
+        return transmissionType;
+    }
+
+    public void setTransmissionType(TransmissionType transmissionType) {
+        this.transmissionType = transmissionType;
+    }
+
     public int getYear() {
         return year;
     }
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public void setEngineType(String engineType) {
-        this.engineType = engineType;
-    }
-
-    public String getTransmissionType() {
-        return transmissionType;
-    }
-
-    public void setTransmissionType(String transmissionType) {
-        this.transmissionType = transmissionType;
     }
 
     public String getModel() {
@@ -113,19 +110,19 @@ public class OfferAddView {
         this.models = models;
     }
 
-    public List<EngineType> getEngineTypes() {
-        return engineTypes;
-    }
-
-    public void setEngineTypes(List<EngineType> engineTypes) {
-        this.engineTypes = engineTypes;
-    }
-
     public List<TransmissionType> getTransmissionTypes() {
         return transmissionTypes;
     }
 
     public void setTransmissionTypes(List<TransmissionType> transmissionTypes) {
         this.transmissionTypes = transmissionTypes;
+    }
+
+    public List<EngineType> getEngineTypes() {
+        return engineTypes;
+    }
+
+    public void setEngineTypes(List<EngineType> engineTypes) {
+        this.engineTypes = engineTypes;
     }
 }

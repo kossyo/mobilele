@@ -1,40 +1,69 @@
 package bg.softuni.mobilele.models.bindings.offer;
 
 import bg.softuni.mobilele.models.dtos.ModelDto;
-import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class OfferUpdateView {
+public abstract class OfferBindingModel {
 
-    OfferDto offer;
+    protected List<ModelDto> models;
 
-    List<ModelDto> models;
+    protected List<EngineType> engineTypes;
 
-    List<EngineType> engineTypes;
+    protected List<TransmissionType> transmissionTypes;
 
-    List<TransmissionType> transmissionTypes;
+    @Length(min = 1)
+    protected  String model;
 
-    private Long offerId;
+    @Length(min = 2)
+    protected  String description;
 
-    private String description;
+    @Length(min = 1)
+    protected String engineType;
 
-    private String engineType;
+    @Length(min = 1)
+    protected String imageUrl;
 
-    private String imageUrl;
+    @NotNull
+    protected int mileage;
 
-    private int mileage;
+    @NotNull
+    protected BigDecimal price;
 
-    private BigDecimal price;
+    @Length(min = 1)
+    protected String transmissionType;
 
-    private String transmissionType;
+    @NotNull
+    protected int year;
 
-    private int year;
+    public List<ModelDto> getModels() {
+        return models;
+    }
 
-    private String model;
+    public void setModels(List<ModelDto> models) {
+        this.models = models;
+    }
+
+    public List<EngineType> getEngineTypes() {
+        return engineTypes;
+    }
+
+    public void setEngineTypes(List<EngineType> engineTypes) {
+        this.engineTypes = engineTypes;
+    }
+
+    public List<TransmissionType> getTransmissionTypes() {
+        return transmissionTypes;
+    }
+
+    public void setTransmissionTypes(List<TransmissionType> transmissionTypes) {
+        this.transmissionTypes = transmissionTypes;
+    }
 
     public String getDescription() {
         return description;
@@ -98,45 +127,5 @@ public class OfferUpdateView {
 
     public void setModel(String model) {
         this.model = model;
-    }
-
-    public Long getOfferId() {
-        return offerId;
-    }
-
-    public void setOfferId(Long offerId) {
-        this.offerId = offerId;
-    }
-
-    public OfferDto getOffer() {
-        return offer;
-    }
-
-    public void setOffer(OfferDto offer) {
-        this.offer = offer;
-    }
-
-    public List<ModelDto> getModels() {
-        return models;
-    }
-
-    public void setModels(List<ModelDto> models) {
-        this.models = models;
-    }
-
-    public List<EngineType> getEngineTypes() {
-        return engineTypes;
-    }
-
-    public void setEngineTypes(List<EngineType> engineTypes) {
-        this.engineTypes = engineTypes;
-    }
-
-    public List<TransmissionType> getTransmissionTypes() {
-        return transmissionTypes;
-    }
-
-    public void setTransmissionTypes(List<TransmissionType> transmissionTypes) {
-        this.transmissionTypes = transmissionTypes;
     }
 }

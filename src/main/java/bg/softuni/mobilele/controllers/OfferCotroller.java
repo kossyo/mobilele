@@ -1,12 +1,9 @@
 package bg.softuni.mobilele.controllers;
 
-import bg.softuni.mobilele.models.dtos.ModelDto;
+import bg.softuni.mobilele.models.bindings.offer.OfferAddBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.OfferUpdateBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
 import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.entities.enums.EngineType;
-import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import bg.softuni.mobilele.models.bindings.offer.OfferAddView;
-import bg.softuni.mobilele.models.bindings.offer.OfferUpdateView;
-import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,12 +21,10 @@ import java.util.List;
 public class OfferCotroller {
 
     private final OfferService offerService;
-    private final ModelService modelService;
 
-    public OfferCotroller(OfferService offerService, ModelService modelService) {
+    public OfferCotroller(OfferService offerService) {
 
         this.offerService = offerService;
-        this.modelService = modelService;
     }
 
     @GetMapping("all")
@@ -61,14 +55,36 @@ public class OfferCotroller {
     }
 
     @GetMapping("updateOffer/{id}")
-    public String updateOffer(Model model, @PathVariable Long id) {
-        model.addAttribute("offerView", initOfferUpdateView(id));
+    public String updateOffer(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+        boolean wasRedirected = model.containsAttribute("offerUpdateBindingModel");
+        if (wasRedirected) {
+
+            //взимам си offerUpdateBindingModel-а, защото ми е нужен, за да създам updateOfferViewModel на следващия ред:
+            OfferUpdateBindingModel offerUpdateBindingModel = (OfferUpdateBindingModel) model.getAttribute("offerUpdateBindingModel");
+
+            UpdateOfferViewModel updateOfferViewModel = offerService.initOfferUpdateViewModelAfterRedirect(offerUpdateBindingModel);
+            //добавям updateOfferViewModel към модела, на първо четене нищо необичайно.
+            model.addAttribute("updateOfferViewModel", updateOfferViewModel);//
+        } else {
+            UpdateOfferViewModel updateOfferViewModel = offerService.initUpdateOfferViewModelFromDb(id);
+            model.addAttribute("updateOfferViewModel", updateOfferViewModel);
+        }
         return "offers/update";
     }
 
     @PostMapping("confirmUpdate")
-    public String confirmUpdate(@ModelAttribute OfferUpdateView offerUpdateView) {
-        offerService.update(offerUpdateView);
+    public String confirmUpdate(Model model,
+                                @Valid @ModelAttribute OfferUpdateBindingModel offerUpdateBindingModel,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("offerUpdateBindingModel", offerUpdateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerUpdateBindingModel",
+                    bindingResult);
+
+            return String.format("redirect:/offers/updateOffer/%d", offerUpdateBindingModel.getOfferId());
+
+        }
         return "offers/all-offers";
     }
 
@@ -81,18 +97,21 @@ public class OfferCotroller {
 
     @GetMapping("add")
     public String add(Model model) {
-        model.addAttribute("offerView", initOfferAddView());
+        model.addAttribute("offerAddBindingModel", offerService.initOfferAddBindingModel());
         return "offers/add-offer";
     }
 
     @PostMapping("confirmAdd")
-    public String confirmAdd(@Valid @ModelAttribute OfferAddView offerAddView,
+    public String confirmAdd(@Valid @ModelAttribute OfferAddBindingModel offerAddBindingModel,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel", bindingResult);
+            redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
+
             return "redirect:/offers/add";
         }
-        offerService.add(offerAddView);
+        offerService.add(offerAddBindingModel);
         return "offers/all-offers";
     }
 
@@ -100,47 +119,5 @@ public class OfferCotroller {
     public String cookie(HttpServletResponse response, @RequestParam String valSelected, HttpSession session) {
         session.setAttribute("valSelFromCookie", valSelected);//this is not a cookie at all, just a wrong var name
         return "redirect:/offers/all";
-    }
-
-    private OfferUpdateView initOfferUpdateView(Long id) {
-        OfferDto offer = offerService.findById(id);
-        List<ModelDto> models = modelService.findAllByBrandId(offer.getModel().getBrand().getId());
-
-        OfferUpdateView offerUpdateView = new OfferUpdateView();
-        offerUpdateView.setOffer(offer);
-        offerUpdateView.setModels(models);
-
-        offerUpdateView.setEngineTypes(initEngineTypes());
-        offerUpdateView.setTransmissionTypes(initTransmissionTypes());
-
-        return offerUpdateView;
-    }
-
-    private OfferAddView initOfferAddView() {
-
-        OfferAddView offerUpdateView = new OfferAddView();
-        List<ModelDto> models = modelService.findAll();
-
-        offerUpdateView.setModels(models);
-        offerUpdateView.setEngineTypes(initEngineTypes());
-        offerUpdateView.setTransmissionTypes(initTransmissionTypes());
-
-        return offerUpdateView;
-    }
-
-    private List<TransmissionType> initTransmissionTypes() {
-        List<TransmissionType> transmissionTypes = new ArrayList<>();
-        transmissionTypes.add(TransmissionType.AUTOMATIC);
-        transmissionTypes.add(TransmissionType.MANUAL);
-        return transmissionTypes;
-    }
-
-    private List<EngineType> initEngineTypes() {
-        List<EngineType> engineTypes = new ArrayList<>();
-        engineTypes.add(EngineType.GASOLINE);
-        engineTypes.add(EngineType.DIESEL);
-        engineTypes.add(EngineType.ELECTRIC);
-        engineTypes.add(EngineType.HYBRID);
-        return engineTypes;
     }
 }
