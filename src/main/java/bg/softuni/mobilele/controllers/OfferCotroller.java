@@ -1,9 +1,15 @@
 package bg.softuni.mobilele.controllers;
 
-import bg.softuni.mobilele.models.bindings.offer.OfferAddBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.OfferUpdateBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
+import bg.softuni.mobilele.models.bindings.user.UserLoginBindingModel;
+import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.entities.enums.EngineType;
+import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,10 +28,12 @@ import java.util.List;
 public class OfferCotroller {
 
     private final OfferService offerService;
+    private final ModelService modelService;
 
-    public OfferCotroller(OfferService offerService) {
+    public OfferCotroller(OfferService offerService, ModelService modelService) {
 
         this.offerService = offerService;
+        this.modelService = modelService;
     }
 
     @GetMapping("all")
@@ -56,33 +65,41 @@ public class OfferCotroller {
 
     @GetMapping("updateOffer/{id}")
     public String updateOffer(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
-        boolean wasRedirected = model.containsAttribute("offerUpdateBindingModel");
-        if (wasRedirected) {
+        boolean wasRedirected = model.containsAttribute("updateOfferBindingModel");
+        if (!wasRedirected) {
 
-            //взимам си offerUpdateBindingModel-а, защото ми е нужен, за да създам updateOfferViewModel на следващия ред:
-            OfferUpdateBindingModel offerUpdateBindingModel = (OfferUpdateBindingModel) model.getAttribute("offerUpdateBindingModel");
-
-            UpdateOfferViewModel updateOfferViewModel = offerService.initOfferUpdateViewModelAfterRedirect(offerUpdateBindingModel);
-            //добавям updateOfferViewModel към модела, на първо четене нищо необичайно.
-            model.addAttribute("updateOfferViewModel", updateOfferViewModel);//
-        } else {
-            UpdateOfferViewModel updateOfferViewModel = offerService.initUpdateOfferViewModelFromDb(id);
-            model.addAttribute("updateOfferViewModel", updateOfferViewModel);
+//
+//            UpdateOfferViewModel updateOfferViewModel = offerService.initUpdateOfferViewModelFromDb(id);
+            model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
         }
+//        else {
+//         //   UpdateOfferBindingModel updateOfferBindingModel =
+////                    (UpdateOfferBindingModel) model.getAttribute("updateOfferBindingModel");
+////            UpdateOfferViewModel updateOfferViewModel = offerService
+////                    .initOfferUpdateViewModelAfterRedirect(updateOfferBindingModel);
+////            model.addAttribute("updateOfferViewModel", updateOfferViewModel);
+//        }
+        List<ModelDto> models = modelService.findAll();
+        List<EngineType> engineTypes = initEngineTypes();
+        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        model.addAttribute("models", models);
+        model.addAttribute("engineTypes", engineTypes);
+        model.addAttribute("transmissionTypes", transmissionTypes);
+        model.addAttribute("offerId", id);
         return "offers/update";
     }
 
     @PostMapping("confirmUpdate")
     public String confirmUpdate(Model model,
-                                @Valid @ModelAttribute OfferUpdateBindingModel offerUpdateBindingModel,
+                                @Valid @ModelAttribute UpdateOfferBindingModel updateOfferBindingModel,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("offerUpdateBindingModel", offerUpdateBindingModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerUpdateBindingModel",
+            redirectAttributes.addFlashAttribute("updateOfferBindingModel", updateOfferBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.updateOfferBindingModel",
                     bindingResult);
 
-            return String.format("redirect:/offers/updateOffer/%d", offerUpdateBindingModel.getOfferId());
+            return String.format("redirect:/offers/updateOffer/%d", updateOfferBindingModel.getOfferId());
 
         }
         return "offers/all-offers";
@@ -97,21 +114,41 @@ public class OfferCotroller {
 
     @GetMapping("add")
     public String add(Model model) {
-        model.addAttribute("offerAddBindingModel", offerService.initOfferAddBindingModel());
+//        offerService.initAddOfferViewModel(model);
+        if(!model.containsAttribute("addOfferBindingModel")){
+            model.addAttribute("addOfferBindingModel", new AddOfferBindingModel());
+        }
+        List<ModelDto> models = modelService.findAll();
+        List<EngineType> engineTypes = initEngineTypes();
+        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        model.addAttribute("models", models);
+        model.addAttribute("engineTypes", engineTypes);
+        model.addAttribute("transmissionTypes", transmissionTypes);
+
+//        AddOfferViewModel addOfferViewModel = new AddOfferViewModel();
+//        List<ModelDto> models = modelService.findAll();
+//        List<EngineType> engineTypes = initEngineTypes();
+//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+//        addOfferViewModel.setModels(models);
+//        addOfferViewModel.setEngineTypes(engineTypes);
+//        addOfferViewModel.setTransmissionTypes(transmissionTypes);
+//       model.addAttribute("addOfferViewModel", addOfferViewModel);
+
+
         return "offers/add-offer";
     }
 
     @PostMapping("confirmAdd")
-    public String confirmAdd(@Valid @ModelAttribute OfferAddBindingModel offerAddBindingModel,
+    public String confirmAdd(@Valid @ModelAttribute AddOfferBindingModel addOfferBindingModel,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.offerAddBindingModel", bindingResult);
-            redirectAttributes.addFlashAttribute("offerAddBindingModel", offerAddBindingModel);
+            redirectAttributes.addFlashAttribute("addOfferBindingModel", addOfferBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addOfferBindingModel", bindingResult);
 
             return "redirect:/offers/add";
         }
-        offerService.add(offerAddBindingModel);
+        offerService.add(addOfferBindingModel);
         return "offers/all-offers";
     }
 
@@ -119,5 +156,21 @@ public class OfferCotroller {
     public String cookie(HttpServletResponse response, @RequestParam String valSelected, HttpSession session) {
         session.setAttribute("valSelFromCookie", valSelected);//this is not a cookie at all, just a wrong var name
         return "redirect:/offers/all";
+    }
+
+    public List<TransmissionType> initTransmissionTypes() {
+        List<TransmissionType> transmissionTypes = new ArrayList<>();
+        transmissionTypes.add(TransmissionType.AUTOMATIC);
+        transmissionTypes.add(TransmissionType.MANUAL);
+        return transmissionTypes;
+    }
+
+    public List<EngineType> initEngineTypes() {
+        List<EngineType> engineTypes = new ArrayList<>();
+        engineTypes.add(EngineType.GASOLINE);
+        engineTypes.add(EngineType.DIESEL);
+        engineTypes.add(EngineType.ELECTRIC);
+        engineTypes.add(EngineType.HYBRID);
+        return engineTypes;
     }
 }

@@ -1,17 +1,16 @@
 package bg.softuni.mobilele.models.bindings.user;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserLoginBindingModel {
 
     @NotNull
-    @Length(min = 2, message = "username too short")
+    @Size(min = 2, message = "username too short")
     private String username;
 
     @NotNull
-    @Length(min = 3, message = "password too short")
+    @Size(min = 3, message = "password too short")
     private String password;
 
     public String getUsername() {

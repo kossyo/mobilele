@@ -18,19 +18,19 @@
 
 <div class="container">
     <h2 class="text-center text-white">Update Offer</h2>
-    <form method="POST" action="/offers/confirmUpdate" th:object="${updateOfferViewModel}"
+    <form method="POST" action="/offers/confirmUpdate" th:object="${updateOfferBindingModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
-            <input type="hidden" th:name="offerId" th:value="*{offerId}">
+            <input type="hidden" th:name="offerId" th:value="${offerId}">
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="model">Model</label>
-                <select id="model" th:name="model" class="form-control">
+                <select id="model" th:name="model"  class="form-control">
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
-                        <option th:each="model: *{models}"
+                        <option th:each="model: ${models}"
                                 th:text="${model.name}"
                                 th:value="${model.name}"
-                                th:selected="${model.name} == *{model}">Model
+                                th:selected="${model} == *{model}">Model
                         </option>
                     </optgroup>
                 </select>
@@ -53,7 +53,7 @@
                 <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
                 <select id="engine" class="form-control" th:name="engineType">
                     <option value="">- Select engine type -</option>
-                    <option th:each="engineType: *{engineTypes}"
+                    <option th:each="engineType: ${engineTypes}"
                             th:text="${engineType}"
                             th:value="${engineType}"
                             th:selected="(${engineType} == *{engineType})">
@@ -68,7 +68,7 @@
                 <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
                 <select id="transmission" class="form-control" th:name="transmissionType">
                     <option value="">- Select transmission type -</option>
-                    <option th:each="transmissionType: *{transmissionTypes}"
+                    <option th:each="transmissionType: ${transmissionTypes}"
                             th:text="${transmissionType}"
                             th:value="${transmissionType}"
                             th:selected="(${transmissionType} == *{transmissionType})">
@@ -83,7 +83,7 @@
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label for="year" class="text-white font-weight-bold">Year</label>
-                <input id="year" th:name="year" type="number" th:value="*{year}" min="1900" max="2099" step="1"
+                <input id="year" th:name="year" type="number" th:value="${year}" min="1900" max="2099" step="1"
                        class="form-control"
                        placeholder="Manufacturing year"/>
                 <p th:if="${#fields.hasErrors('year')}" class="errors alert alert-danger">

@@ -1,11 +1,13 @@
 package bg.softuni.mobilele.services;
 
+import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
 import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.bindings.offer.OfferAddBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.OfferUpdateBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -14,15 +16,15 @@ public interface OfferService {
 
     OfferDto findById(Long id) throws IllegalArgumentException;
 
-    void update(OfferUpdateBindingModel offerUpdateView);
+    void update(UpdateOfferBindingModel offerUpdateView);
 
-    void add(OfferAddBindingModel offerAddView);
+    void add(AddOfferBindingModel offerAddView);
 
     void delete(Long id);
 
-    UpdateOfferViewModel initOfferUpdateViewModelAfterRedirect(OfferUpdateBindingModel offerUpdateBindingModel);
+    UpdateOfferViewModel initOfferUpdateViewModelAfterRedirect(UpdateOfferBindingModel updateOfferBindingModel);
 
-    OfferAddBindingModel initOfferAddBindingModel();
+    void initAddOfferViewModel(Model model);
 
     List<TransmissionType> initTransmissionTypes();
 

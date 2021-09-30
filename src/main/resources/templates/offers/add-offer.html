@@ -17,7 +17,7 @@
 
 <div class="container">
     <h2 class="text-center text-white">Add new Offer</h2>
-    <form method="POST" action="/offers/confirmAdd" th:object="${offerAddBindingModel}"
+    <form method="POST" action="/offers/confirmAdd" th:object="${addOfferBindingModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="row">
 
@@ -26,7 +26,7 @@
                 <select id="model" th:name="model" class="form-control">
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
-                        <option th:each="model: *{models}"
+                        <option th:each="model: ${models}"
                                 th:text="${model.name}"
                                 th:value="${model.name}"
                                 >Model
@@ -51,7 +51,7 @@
                 <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
                 <select id="engine" class="form-control" th:name="engineType">
                     <option value="">- Select engine type -</option>
-                    <option th:each="engineType: *{engineTypes}"
+                    <option th:each="engineType: ${engineTypes}"
                             th:text="${engineType}"
                             th:value="${engineType}"
                             >
@@ -66,14 +66,14 @@
                 <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
                 <select id="transmission" class="form-control" th:name="transmissionType">
                     <option value="">- Select transmission type -</option>
-                    <option th:each="transmissionType: *{transmissionTypes}"
+                    <option th:each="transmissionType: ${transmissionTypes}"
                             th:text="${transmissionType}"
                             th:value="${transmissionType}"
                             >
                         Transmission type
                     </option>
                 </select>
-                <p th:if="${#fields.hasErrors('transmission')}" class="errors alert alert-danger">
+                <p th:if="${#fields.hasErrors('transmissionType')}" class="errors alert alert-danger">
                     Transmission type is required.
                 </p>
             </div>

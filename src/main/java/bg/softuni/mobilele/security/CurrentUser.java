@@ -11,10 +11,9 @@ import java.util.List;
 //todo: replace all 'action'-s by 'th:action'-s
 //todo: remove the trick with nulling confirmPassword
 // and try to do it with flashattribute and keep <>their text<>
-// use validation when updating an offer
+
 //todo: check whether error mssgs dissapear when editing an offer
 //todo: select menu with the cookie doesn't work
-// change @length to size
 
 @Component("currentUser")
 @SessionScope

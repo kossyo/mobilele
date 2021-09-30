@@ -1,6 +1,9 @@
 package bg.softuni.mobilele.models.bindings.offer;
 
+import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.entities.enums.EngineType;
+import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
@@ -8,25 +11,26 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.List;
 
-public class OfferUpdateBindingModel {
+public class UpdateOfferBindingModel {
 
     private Long offerId;
 
     @NotNull(message = "mdl rqrd")
-    @Length(min = 1, message = "mdl rqrd")
+    @Size(min = 1, message = "mdl rqrd")
     private String model;
 
     @NotNull
-    @Length(min = 2)
+    @Size(min = 2)
     private String description;
 
     @NotNull
-    @Length(min = 1)
+    @Size(min = 1)
     private String engineType;
 
     @NotNull
-    @Length(min = 1)
+    @Size(min = 1)
     private String imageUrl;
 
     @NotNull
@@ -38,23 +42,13 @@ public class OfferUpdateBindingModel {
     private BigDecimal price;
 
     @NotNull
-    @Length(min = 1)
+    @Size(min = 1)
     private String transmissionType;
 
     @NotNull
     @Min(1900)
     @Max(2099)
     private int year;
-
-    private OfferDto offer;
-
-    public OfferDto getOffer() {
-        return offer;
-    }
-
-    public void setOffer(OfferDto offer) {
-        this.offer = offer;
-    }
 
     public Long getOfferId() {
         return offerId;
@@ -127,8 +121,4 @@ public class OfferUpdateBindingModel {
     public void setYear(int year) {
         this.year = year;
     }
-
-
-
-
 }
