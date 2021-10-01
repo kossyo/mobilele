@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AddOfferBindingModel {
 
-    @NotNull(message = "mdl rqrd")
-    @Size(min = 1, message = "mdl rqrd")
+    @NotNull(message = "model required")
+    @Size(min = 1, message = "model required")
     private String model;
 
     @NotNull

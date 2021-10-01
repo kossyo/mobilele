@@ -136,24 +136,6 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void initAddOfferViewModel(org.springframework.ui.Model model) {
-
-//        AddOfferViewModel addOfferViewModel = new AddOfferViewModel();
-
-//        List<ModelDto> models = modelService.findAll();
-//        List<EngineType> engineTypes = initEngineTypes();
-//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
-//        model.addAttribute("models", models);
-//        model.addAttribute("engineTypes", engineTypes);
-//        model.addAttribute("transmissionTypes", transmissionTypes);
-//        addOfferViewModel.setModels(models);
-//        addOfferViewModel.setEngineTypes(engineTypes);
-//        addOfferViewModel.setTransmissionTypes(transmissionTypes);
-
-//        return addOfferViewModel;
-    }
-
-    @Override
     public List<TransmissionType> initTransmissionTypes() {
         List<TransmissionType> transmissionTypes = new ArrayList<>();
         transmissionTypes.add(TransmissionType.AUTOMATIC);
@@ -185,5 +167,34 @@ public class OfferServiceImpl implements OfferService {
         updateOfferViewModel.setTransmissionTypes(initTransmissionTypes());
         updateOfferViewModel.setModel(offer.getModel().getName());
         return updateOfferViewModel;
+    }
+
+    @Override
+    public UpdateOfferViewModel getUpdateOfferViewModel(Long id) {
+        OfferDto offerDto = findById(id);
+        List<ModelDto> models = offerDto.getModel().getBrand().getModels();
+        List<EngineType> engineTypes = initEngineTypes();
+        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+
+        UpdateOfferViewModel updateOfferViewModel = new UpdateOfferViewModel();
+        updateOfferViewModel.setOfferDto(offerDto);
+        updateOfferViewModel.setModels(models);
+        updateOfferViewModel.setEngineTypes(engineTypes);
+        updateOfferViewModel.setTransmissionTypes(transmissionTypes);
+        return updateOfferViewModel;
+    }
+
+    @Override
+    public AddOfferViewModel getAddOfferViewModel(){
+
+        AddOfferViewModel addOfferViewModel = new AddOfferViewModel();
+        List<ModelDto> models = modelService.findAll();
+        List<EngineType> engineTypes = initEngineTypes();
+        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        addOfferViewModel.setModels(models);
+        addOfferViewModel.setEngineTypes(engineTypes);
+        addOfferViewModel.setTransmissionTypes(transmissionTypes);
+
+        return addOfferViewModel;
     }
 }

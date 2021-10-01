@@ -17,8 +17,8 @@ public class UpdateOfferBindingModel {
 
     private Long offerId;
 
-    @NotNull(message = "mdl rqrd")
-    @Size(min = 1, message = "mdl rqrd")
+    @NotNull(message = "model required")
+    @Size(min = 1, message = "model required")
     private String model;
 
     @NotNull

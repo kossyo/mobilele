@@ -26,7 +26,7 @@
                 <select id="model" th:name="model" class="form-control">
                     <option value="">- Select a model -</option>
                     <optgroup label="Brand name">
-                        <option th:each="model: ${models}"
+                        <option th:each="model: ${addOfferViewModel.models}"
                                 th:text="${model.name}"
                                 th:value="${model.name}"
                                 >Model
@@ -51,7 +51,7 @@
                 <label class="text-center text-white font-weight-bold" for="engine">Engine</label>
                 <select id="engine" class="form-control" th:name="engineType">
                     <option value="">- Select engine type -</option>
-                    <option th:each="engineType: ${engineTypes}"
+                    <option th:each="engineType: ${addOfferViewModel.engineTypes}"
                             th:text="${engineType}"
                             th:value="${engineType}"
                             >
@@ -66,7 +66,7 @@
                 <label class="text-center text-white font-weight-bold" for="transmission">Transmission</label>
                 <select id="transmission" class="form-control" th:name="transmissionType">
                     <option value="">- Select transmission type -</option>
-                    <option th:each="transmissionType: ${transmissionTypes}"
+                    <option th:each="transmissionType: ${addOfferViewModel.transmissionTypes}"
                             th:text="${transmissionType}"
                             th:value="${transmissionType}"
                             >

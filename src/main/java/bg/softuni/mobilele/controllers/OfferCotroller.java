@@ -1,11 +1,10 @@
 package bg.softuni.mobilele.controllers;
 
 import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
+import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
-import bg.softuni.mobilele.models.dtos.ModelDto;
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
 import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.entities.enums.EngineType;
-import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
@@ -53,8 +52,7 @@ public class OfferCotroller {
 
     @GetMapping("details/{id}")
     public String getDetails(Model model, @PathVariable Long id) throws IllegalArgumentException {
-        OfferDto offerDto;
-        offerDto = offerService.findById(id);
+        OfferDto offerDto = offerService.findById(id);
         model.addAttribute("offer", offerDto);
         return "offers/offer-details";
     }
@@ -66,27 +64,16 @@ public class OfferCotroller {
         if (!wasRedirected) {
             model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
         }
-        OfferDto offerDto = offerService.findById(id);
-        List<ModelDto> models = offerDto.getModel().getBrand().getModels();
-        List<EngineType> engineTypes = offerService.initEngineTypes();
-        List<TransmissionType> transmissionTypes = offerService.initTransmissionTypes();
-        model.addAttribute("models", models);
-        model.addAttribute("engineTypes", engineTypes);
-        model.addAttribute("transmissionTypes", transmissionTypes);
-        model.addAttribute("offerDto", offerDto);
 
         //todo: uncomment the code below and remove code above and make it work
 
-//        UpdateOfferViewModel updateOfferViewModel = new UpdateOfferViewModel();
-//        updateOfferViewModel.setOfferDto(offerDto);
-//        updateOfferViewModel.setModels(models);
-//        updateOfferViewModel.setEngineTypes(engineTypes);
-//        updateOfferViewModel.setTransmissionTypes(transmissionTypes);
-//        model.addAttribute("updateOfferViewModel", updateOfferViewModel);
+        UpdateOfferViewModel updateOfferViewModel = offerService.getUpdateOfferViewModel(id);
+        model.addAttribute("updateOfferViewModel", updateOfferViewModel);
 
         //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         return "offers/update";
     }
+
 
     @PostMapping("confirmUpdate")
     public String confirmUpdate(Model model,
@@ -101,6 +88,7 @@ public class OfferCotroller {
             return String.format("redirect:/offers/updateOffer/%d", updateOfferBindingModel.getOfferId());
 
         }
+        offerService.update(updateOfferBindingModel);
         return "offers/all-offers";
     }
 
@@ -113,17 +101,11 @@ public class OfferCotroller {
 
     @GetMapping("add")
     public String add(Model model) {
-//        offerService.initAddOfferViewModel(model);
-        if(!model.containsAttribute("addOfferBindingModel")){
+        if (!model.containsAttribute("addOfferBindingModel")) {
             model.addAttribute("addOfferBindingModel", new AddOfferBindingModel());
         }
-        List<ModelDto> models = modelService.findAll();
-        List<EngineType> engineTypes = offerService.initEngineTypes();
-        List<TransmissionType> transmissionTypes = offerService.initTransmissionTypes();
-        model.addAttribute("models", models);
-        model.addAttribute("engineTypes", engineTypes);
-        model.addAttribute("transmissionTypes", transmissionTypes);
-
+        AddOfferViewModel addOfferViewModel = offerService.getAddOfferViewModel();
+        model.addAttribute("addOfferViewModel", addOfferViewModel);
         return "offers/add-offer";
     }
 
@@ -146,20 +128,4 @@ public class OfferCotroller {
         session.setAttribute("valSelFromCookie", valSelected);//this is not a cookie at all, just a wrong var name
         return "redirect:/offers/all";
     }
-
-//    public List<TransmissionType> initTransmissionTypes() {
-//        List<TransmissionType> transmissionTypes = new ArrayList<>();
-//        transmissionTypes.add(TransmissionType.AUTOMATIC);
-//        transmissionTypes.add(TransmissionType.MANUAL);
-//        return transmissionTypes;
-//    }
-//
-//    public List<EngineType> initEngineTypes() {
-//        List<EngineType> engineTypes = new ArrayList<>();
-//        engineTypes.add(EngineType.GASOLINE);
-//        engineTypes.add(EngineType.DIESEL);
-//        engineTypes.add(EngineType.ELECTRIC);
-//        engineTypes.add(EngineType.HYBRID);
-//        return engineTypes;
-//    }
 }
