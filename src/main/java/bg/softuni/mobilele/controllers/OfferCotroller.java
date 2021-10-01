@@ -1,10 +1,7 @@
 package bg.softuni.mobilele.controllers;
 
 import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
-import bg.softuni.mobilele.models.bindings.user.UserLoginBindingModel;
 import bg.softuni.mobilele.models.dtos.ModelDto;
 import bg.softuni.mobilele.models.dtos.OfferDto;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
@@ -20,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -66,26 +62,26 @@ public class OfferCotroller {
     @GetMapping("updateOffer/{id}")
     public String updateOffer(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         boolean wasRedirected = model.containsAttribute("updateOfferBindingModel");
-        if (!wasRedirected) {
 
-//
-//            UpdateOfferViewModel updateOfferViewModel = offerService.initUpdateOfferViewModelFromDb(id);
+        if (!wasRedirected) {
             model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
         }
-//        else {
-//         //   UpdateOfferBindingModel updateOfferBindingModel =
-////                    (UpdateOfferBindingModel) model.getAttribute("updateOfferBindingModel");
-////            UpdateOfferViewModel updateOfferViewModel = offerService
-////                    .initOfferUpdateViewModelAfterRedirect(updateOfferBindingModel);
-////            model.addAttribute("updateOfferViewModel", updateOfferViewModel);
-//        }
-        List<ModelDto> models = modelService.findAll();
-        List<EngineType> engineTypes = initEngineTypes();
-        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        OfferDto offerDto = offerService.findById(id);
+        List<ModelDto> models = offerDto.getModel().getBrand().getModels();
+        List<EngineType> engineTypes = offerService.initEngineTypes();
+        List<TransmissionType> transmissionTypes = offerService.initTransmissionTypes();
         model.addAttribute("models", models);
         model.addAttribute("engineTypes", engineTypes);
         model.addAttribute("transmissionTypes", transmissionTypes);
-        model.addAttribute("offerId", id);
+        model.addAttribute("offerDto", offerDto);
+//        UpdateOfferViewModel updateOfferViewModel = new UpdateOfferViewModel();
+//        updateOfferViewModel.setOfferDto(offerDto);
+//        updateOfferViewModel.setModels(models);
+//        updateOfferViewModel.setEngineTypes(engineTypes);
+//        updateOfferViewModel.setTransmissionTypes(transmissionTypes);
+//        model.addAttribute("updateOfferViewModel", updateOfferViewModel);
+
+        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         return "offers/update";
     }
 
@@ -119,21 +115,11 @@ public class OfferCotroller {
             model.addAttribute("addOfferBindingModel", new AddOfferBindingModel());
         }
         List<ModelDto> models = modelService.findAll();
-        List<EngineType> engineTypes = initEngineTypes();
-        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        List<EngineType> engineTypes = offerService.initEngineTypes();
+        List<TransmissionType> transmissionTypes = offerService.initTransmissionTypes();
         model.addAttribute("models", models);
         model.addAttribute("engineTypes", engineTypes);
         model.addAttribute("transmissionTypes", transmissionTypes);
-
-//        AddOfferViewModel addOfferViewModel = new AddOfferViewModel();
-//        List<ModelDto> models = modelService.findAll();
-//        List<EngineType> engineTypes = initEngineTypes();
-//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
-//        addOfferViewModel.setModels(models);
-//        addOfferViewModel.setEngineTypes(engineTypes);
-//        addOfferViewModel.setTransmissionTypes(transmissionTypes);
-//       model.addAttribute("addOfferViewModel", addOfferViewModel);
-
 
         return "offers/add-offer";
     }
@@ -158,19 +144,19 @@ public class OfferCotroller {
         return "redirect:/offers/all";
     }
 
-    public List<TransmissionType> initTransmissionTypes() {
-        List<TransmissionType> transmissionTypes = new ArrayList<>();
-        transmissionTypes.add(TransmissionType.AUTOMATIC);
-        transmissionTypes.add(TransmissionType.MANUAL);
-        return transmissionTypes;
-    }
-
-    public List<EngineType> initEngineTypes() {
-        List<EngineType> engineTypes = new ArrayList<>();
-        engineTypes.add(EngineType.GASOLINE);
-        engineTypes.add(EngineType.DIESEL);
-        engineTypes.add(EngineType.ELECTRIC);
-        engineTypes.add(EngineType.HYBRID);
-        return engineTypes;
-    }
+//    public List<TransmissionType> initTransmissionTypes() {
+//        List<TransmissionType> transmissionTypes = new ArrayList<>();
+//        transmissionTypes.add(TransmissionType.AUTOMATIC);
+//        transmissionTypes.add(TransmissionType.MANUAL);
+//        return transmissionTypes;
+//    }
+//
+//    public List<EngineType> initEngineTypes() {
+//        List<EngineType> engineTypes = new ArrayList<>();
+//        engineTypes.add(EngineType.GASOLINE);
+//        engineTypes.add(EngineType.DIESEL);
+//        engineTypes.add(EngineType.ELECTRIC);
+//        engineTypes.add(EngineType.HYBRID);
+//        return engineTypes;
+//    }
 }

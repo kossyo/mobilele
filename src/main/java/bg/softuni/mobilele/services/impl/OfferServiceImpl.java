@@ -63,6 +63,9 @@ public class OfferServiceImpl implements OfferService {
             throw new IllegalArgumentException("Entity not found");
         }
         modelMapper.map(offerEntityOpt.get(), offerDto);
+        //todo: maybe search by Brand object, not by brand.id. change the repo method?
+        List<ModelDto> modelsByBrand = modelService.findAllByBrandId(offerDto.getModel().getBrand().getId());
+        offerDto.getModel().getBrand().setModels(modelsByBrand);
         return offerDto;
     }
 
