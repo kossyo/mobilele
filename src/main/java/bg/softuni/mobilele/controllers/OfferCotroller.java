@@ -74,6 +74,9 @@ public class OfferCotroller {
         model.addAttribute("engineTypes", engineTypes);
         model.addAttribute("transmissionTypes", transmissionTypes);
         model.addAttribute("offerDto", offerDto);
+
+        //todo: uncomment the code below and remove code above and make it work
+
 //        UpdateOfferViewModel updateOfferViewModel = new UpdateOfferViewModel();
 //        updateOfferViewModel.setOfferDto(offerDto);
 //        updateOfferViewModel.setModels(models);
