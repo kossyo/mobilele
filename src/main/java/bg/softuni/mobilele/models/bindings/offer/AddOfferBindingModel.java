@@ -21,6 +21,7 @@ public class AddOfferBindingModel {
     @Size(min = 2)
     private String description;
 
+    //todo: this shouldn't be String, should be the EnumType instead
     @NotNull
     @Size(min = 1)
     private String engineType;
@@ -37,6 +38,8 @@ public class AddOfferBindingModel {
     @Min(1)
     private BigDecimal price;
 
+
+    //todo: this shouldn't be String, should be the EnumType instead
     @NotNull
     @Size(min = 1)
     private String transmissionType;

@@ -7,13 +7,11 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.util.ArrayList;
 import java.util.List;
 
-//todo: update without a model name isn't working. i think the model doesn't have its data after redirect correctly
-//todo: replace all 'action'-s by 'th:action'-s
-//todo: remove the trick with nulling confirmPassword
-// and try to do it with flashattribute and keep <>their text<>
 
-//todo: check whether error mssgs dissapear when editing an offer
+//todo: replace all 'action'-s by 'th:action'-s
+
 //todo: select menu with the cookie doesn't work
+//add empty constructors to dtos
 
 @Component("currentUser")
 @SessionScope

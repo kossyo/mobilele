@@ -1,6 +1,5 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.models.bindings.RoleBindingModel;
 import bg.softuni.mobilele.models.entities.Role;
 import bg.softuni.mobilele.models.entities.enums.RoleType;
 import bg.softuni.mobilele.repos.RoleRepository;
@@ -8,9 +7,7 @@ import bg.softuni.mobilele.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

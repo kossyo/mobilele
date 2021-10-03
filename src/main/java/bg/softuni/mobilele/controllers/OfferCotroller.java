@@ -65,8 +65,6 @@ public class OfferCotroller {
             model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
         }
 
-        //todo: uncomment the code below and remove code above and make it work
-
         UpdateOfferViewModel updateOfferViewModel = offerService.getUpdateOfferViewModel(id);
         model.addAttribute("updateOfferViewModel", updateOfferViewModel);
 
