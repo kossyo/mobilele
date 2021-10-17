@@ -1,13 +1,13 @@
 package bg.softuni.mobilele.models.bindings.offer;
 
-import bg.softuni.mobilele.models.dtos.ModelDto;
+import bg.softuni.mobilele.models.dtos.ModelServiceModel;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AddOfferViewModel {
+public class    AddOfferViewModel  {
     private String description;
 
     private EngineType engineType;
@@ -23,9 +23,31 @@ public class AddOfferViewModel {
     private int year;
     private String model;
 
-    private List<ModelDto> models;
+    private List<ModelServiceModel> models;
     private List<TransmissionType> transmissionTypes;
     private List<EngineType> engineTypes;
+
+    public void setModels(List<ModelServiceModel> models) {
+        this.models = models;
+    }
+
+    public List<TransmissionType> getTransmissionTypes() {
+        return transmissionTypes;
+    }
+
+    public void setTransmissionTypes(List<TransmissionType> transmissionTypes) {
+        this.transmissionTypes = transmissionTypes;
+    }
+
+    public List<EngineType> getEngineTypes() {
+        return engineTypes;
+    }
+
+    public void setEngineTypes(List<EngineType> engineTypes) {
+        this.engineTypes = engineTypes;
+    }
+
+
 
     public String getDescription() {
         return description;
@@ -91,27 +113,9 @@ public class AddOfferViewModel {
         this.model = model;
     }
 
-    public List<ModelDto> getModels() {
+    public List<ModelServiceModel> getModels() {
         return models;
     }
 
-    public void setModels(List<ModelDto> models) {
-        this.models = models;
-    }
 
-    public List<TransmissionType> getTransmissionTypes() {
-        return transmissionTypes;
-    }
-
-    public void setTransmissionTypes(List<TransmissionType> transmissionTypes) {
-        this.transmissionTypes = transmissionTypes;
-    }
-
-    public List<EngineType> getEngineTypes() {
-        return engineTypes;
-    }
-
-    public void setEngineTypes(List<EngineType> engineTypes) {
-        this.engineTypes = engineTypes;
-    }
 }

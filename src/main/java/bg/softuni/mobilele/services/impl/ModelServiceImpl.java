@@ -1,6 +1,6 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.models.dtos.ModelDto;
+import bg.softuni.mobilele.models.dtos.ModelServiceModel;
 import bg.softuni.mobilele.models.entities.Brand;
 import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.repos.BrandRepository;
@@ -27,31 +27,38 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<ModelDto> findAllByBrandId(Long id) {
-        List<ModelDto> modelDtos = new ArrayList<>();
+    public List<ModelServiceModel> findAllByBrandId(Long id) {
+        List<ModelServiceModel> modelServiceModels = new ArrayList<>();
         Optional<Brand> brand = brandRepository.findById(id);
         List<Model> models = new ArrayList<>();
 
         if(brand.isPresent()){
             models = modelRepository.findModelsByBrand(brand.get());
             for (Model model : models) {
-                ModelDto modelDto = new ModelDto();
-                modelMapper.map(model, modelDto);
-                modelDtos.add(modelDto);
+                ModelServiceModel modelServiceModel = new ModelServiceModel();
+                modelMapper.map(model, modelServiceModel);
+                modelServiceModels.add(modelServiceModel);
             }
         }
-        return modelDtos;
+        return modelServiceModels;
     }
 
     @Override
-    public List<ModelDto> findAll() {
+    public List<ModelServiceModel> findAll() {
         List<Model> modelEntities = modelRepository.findAll();
-        List<ModelDto> modelDtos = new ArrayList<>();
+        List<ModelServiceModel> modelServiceModels = new ArrayList<>();
         for (Model modelEntity : modelEntities) {
-            ModelDto modelDto = new ModelDto();
-            modelMapper.map(modelEntity, modelDto);
-            modelDtos.add(modelDto);
+            ModelServiceModel modelServiceModel = new ModelServiceModel();
+            modelMapper.map(modelEntity, modelServiceModel);
+            modelServiceModels.add(modelServiceModel);
         }
-        return modelDtos;
+        return modelServiceModels;
     }
+
+    @Override
+    public Model findByName(String name) {
+        return modelRepository.findModelByName(name);
+    }
+
+
 }

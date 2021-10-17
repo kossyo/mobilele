@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAll();
     Optional<Offer> findById(Long id);
+
 }

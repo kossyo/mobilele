@@ -2,7 +2,7 @@ package bg.softuni.mobilele.models.dtos;
 
 import bg.softuni.mobilele.models.entities.enums.ModelCategory;
 
-public class ModelDto extends BaseDto{
+public class ModelServiceModel extends BaseDto{
 
     private String name;
 

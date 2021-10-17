@@ -80,15 +80,12 @@ public class Model extends BaseEntity {
     @Override
     public String toString() {
         return "Model{" +
-                "id=" + id +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", category=" + category +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", brand=" + brand +
                 ", startYear=" + startYear +
-                ", EndYear=" + endYear +
+                ", endYear=" + endYear +
                 '}';
     }
 }

@@ -2,14 +2,14 @@ package bg.softuni.mobilele.services.impl;
 
 import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
 import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
+import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
-import bg.softuni.mobilele.models.dtos.ModelDto;
-import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.dtos.ModelServiceModel;
+import bg.softuni.mobilele.models.dtos.OfferServiceModel;
 import bg.softuni.mobilele.models.entities.Brand;
 import bg.softuni.mobilele.models.entities.Model;
 import bg.softuni.mobilele.models.entities.Offer;
 import bg.softuni.mobilele.models.entities.User;
-import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 import bg.softuni.mobilele.repos.ModelRepository;
@@ -44,29 +44,24 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public List<OfferDto> findAllOffers() {
-        List<OfferDto> offerDtos = new ArrayList<>();
+    public List<OfferServiceModel> findAllOffers() {
+        List<OfferServiceModel> offerServiceModels = new ArrayList<>();
 
         for (Offer offer : offerRepository.findAll()) {
-            OfferDto offerDto = new OfferDto();
-            modelMapper.map(offer, offerDto);
-            offerDtos.add(offerDto);
+            OfferServiceModel offerServiceModel = new OfferServiceModel();
+            modelMapper.map(offer, offerServiceModel);
+            offerServiceModels.add(offerServiceModel);
         }
-        return offerDtos;
+        return offerServiceModels;
     }
 
     @Override
-    public OfferDto findById(Long id) throws IllegalArgumentException {
-        Optional<Offer> offerEntityOpt = offerRepository.findById(id);
-        OfferDto offerDto = new OfferDto();
-        if (offerEntityOpt.isEmpty()) {
-            throw new IllegalArgumentException("Entity not found");
-        }
-        modelMapper.map(offerEntityOpt.get(), offerDto);
-        //todo: maybe search by Brand object, not by brand.id. change the repo method?
-        List<ModelDto> modelsByBrand = modelService.findAllByBrandId(offerDto.getModel().getBrand().getId());
-        offerDto.getModel().getBrand().setModels(modelsByBrand);
-        return offerDto;
+    public OfferServiceModel findById(Long id) throws IllegalArgumentException {
+        OfferServiceModel offerServiceModel = offerRepository.findById(id).map(o -> modelMapper.map(o, OfferServiceModel.class))
+                .orElseThrow(() -> new IllegalArgumentException("Entity not found"));
+        List<ModelServiceModel> modelsByBrand = modelService.findAllByBrandId(offerServiceModel.getModel().getBrand().getId());
+        offerServiceModel.getModel().getBrand().setModels(modelsByBrand);
+        return offerServiceModel;
     }
 
     @Override
@@ -126,7 +121,7 @@ public class OfferServiceImpl implements OfferService {
         }
         Brand brand = offerOpt.get().getModel().getBrand();
 
-        List<ModelDto> models = modelService.findAllByBrandId(brand.getId());
+        List<ModelServiceModel> models = modelService.findAllByBrandId(brand.getId());
 
         updateOfferViewModel.setModels(models);
 
@@ -156,28 +151,64 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public UpdateOfferViewModel initUpdateOfferViewModelFromDb(Long id) {
-        OfferDto offer = findById(id);
+        OfferServiceModel offer = findById(id);
         UpdateOfferViewModel updateOfferViewModel = modelMapper.map(offer, UpdateOfferViewModel.class);
 
-        List<ModelDto> models = modelService.findAllByBrandId(offer.getModel().getBrand().getId());
+        List<ModelServiceModel> models = modelService.findAllByBrandId(offer.getModel().getBrand().getId());
 
         updateOfferViewModel.setModels(models);
 
         updateOfferViewModel.setEngineTypes(initEngineTypes());
         updateOfferViewModel.setTransmissionTypes(initTransmissionTypes());
-        updateOfferViewModel.setModel(offer.getModel().getName());
+        updateOfferViewModel.setModel(offer.getModel());
         return updateOfferViewModel;
     }
 
     @Override
-    public UpdateOfferViewModel getUpdateOfferViewModel(Long id) {
-        OfferDto offerDto = findById(id);
-        List<ModelDto> models = offerDto.getModel().getBrand().getModels();
+    public UpdateOfferViewModel getUpdateOfferViewModel(Long offerId) {
+        OfferServiceModel offerServiceModel = findById(offerId);
+
+
+        UpdateOfferViewModel updateOfferViewModel = modelMapper.map(offerServiceModel, UpdateOfferViewModel.class);
+
+        updateOfferViewModel.setModel(offerServiceModel.getModel());
+        updateOfferViewModel.setTransmissionType(TransmissionType.valueOf(offerServiceModel.getTransmission()).toString());
+        setModelsForThisBrand(offerServiceModel, updateOfferViewModel);
+        return (UpdateOfferViewModel) fillSelectMenusAllModelsOnlyThisBrand(updateOfferViewModel);
+    }
+
+    @Override
+    public void setModelsForThisBrand(OfferServiceModel offerServiceModel, UpdateOfferViewModel updateOfferViewModel) {
+        Brand brand = modelMapper.map(offerServiceModel.getModel().getBrand(), Brand.class);
+        List<Model> modelsByBrand = modelRepository.findModelsByBrand(brand);
+        List<ModelServiceModel> modelServiceModels = new ArrayList<>();
+        for (Model model : modelsByBrand) {
+            ModelServiceModel modelServiceModel = modelMapper.map(model, ModelServiceModel.class);
+            modelServiceModels.add(modelServiceModel);
+        }
+        updateOfferViewModel.setModels(modelServiceModels);
+    }
+
+    @Override
+    public AddOfferViewModel fillSelectMenusAllModels(AddOfferViewModel addOfferViewModel) {
+        List<ModelServiceModel> models;
+        models = modelService.findAll();
         List<EngineType> engineTypes = initEngineTypes();
         List<TransmissionType> transmissionTypes = initTransmissionTypes();
+        addOfferViewModel.setModels(models);
+        addOfferViewModel.setEngineTypes(engineTypes);
+        addOfferViewModel.setTransmissionTypes(transmissionTypes);
+        return addOfferViewModel;
+    }
 
-        UpdateOfferViewModel updateOfferViewModel = new UpdateOfferViewModel();
-        updateOfferViewModel.setOfferDto(offerDto);
+    @Override
+    public UpdateOfferViewModel fillSelectMenusAllModelsOnlyThisBrand(UpdateOfferViewModel updateOfferViewModel) {
+        List<ModelServiceModel> models;
+        Long brandId = offerRepository.findById(updateOfferViewModel.getOfferId()).orElse(null).getModel().getBrand().getId();
+        models = modelService.findAllByBrandId(brandId);
+
+        List<EngineType> engineTypes = initEngineTypes();
+        List<TransmissionType> transmissionTypes = initTransmissionTypes();
         updateOfferViewModel.setModels(models);
         updateOfferViewModel.setEngineTypes(engineTypes);
         updateOfferViewModel.setTransmissionTypes(transmissionTypes);
@@ -185,16 +216,57 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public AddOfferViewModel getAddOfferViewModel(){
+    public AddOfferViewModel getAddOfferViewModel() {
 
         AddOfferViewModel addOfferViewModel = new AddOfferViewModel();
-        List<ModelDto> models = modelService.findAll();
-        List<EngineType> engineTypes = initEngineTypes();
-        List<TransmissionType> transmissionTypes = initTransmissionTypes();
-        addOfferViewModel.setModels(models);
-        addOfferViewModel.setEngineTypes(engineTypes);
-        addOfferViewModel.setTransmissionTypes(transmissionTypes);
+        fillSelectMenusAllModels(addOfferViewModel);
+//        List<ModelServiceModel> models = modelService.findAll();
+//        List<EngineType> engineTypes = initEngineTypes();
+//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+//        addOfferViewModel.setModels(models);
+//        addOfferViewModel.setEngineTypes(engineTypes);
+//        addOfferViewModel.setTransmissionTypes(transmissionTypes);
 
         return addOfferViewModel;
     }
+
+    @Override
+    public void addBrandId(UpdateOfferViewModel updateOfferViewModel, Long offerId) {
+        Offer offer = offerRepository.findById(offerId).orElse(null);
+        updateOfferViewModel.setBrandId(offer.getModel().getBrand().getId());
+    }
+
+//    @Override
+//    public void removeErroneousFields(UpdateOfferViewModel updateOfferViewModel, BindingResult bindingResult) {
+//        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+//            switch (fieldError.getField()){
+//                case "model": updateOfferViewModel.setModel(new ModelServiceModel()); break;
+//                case "description": updateOfferViewModel.setDescription("");  break;
+//                case "engineType": updateOfferViewModel.setEngineType(null); break;
+//                case "imageUrl": updateOfferViewModel.setImageUrl(null); break;
+//                case "mileage": updateOfferViewModel.setMileage(null); break;
+//                case "price": updateOfferViewModel.setPrice(null); break;
+//                case "transmissionType": updateOfferViewModel.setTransmissionType(null); break;
+//                case "year": updateOfferViewModel.setYear(null); break;
+//            }
+//        }
+//    }
+////
+//    @Override
+//    public UpdateOfferViewModel completeInitUpdateOfferViewModel(Long id) {
+////        UpdateOfferViewModel updateOfferViewModel =
+////        modelMapper.map(updateOfferBindingModel, UpdateOfferViewModel.class);
+//        BrandServiceModel brandByModel = brandService.findBrandByModel(updateOfferViewModel.getModel());
+//
+//        List<ModelServiceModel> models = modelService.findAllByBrandId(brandByModel.getId());
+//        List<EngineType> engineTypes = initEngineTypes();
+//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
+//
+//        updateOfferViewModel.setModels(models);
+//        updateOfferViewModel.setEngineTypes(engineTypes);
+//        updateOfferViewModel.setTransmissionTypes(transmissionTypes);
+//
+//        return updateOfferViewModel;
+//
+//    }
 }

@@ -4,7 +4,7 @@ import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
 import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
 import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
-import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.dtos.OfferServiceModel;
 import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.springframework.stereotype.Controller;
@@ -35,7 +35,7 @@ public class OfferCotroller {
     public String allOffers(Model model,
                             HttpSession session) {
 
-        List<OfferDto> offers = offerService.findAllOffers();
+        List<OfferServiceModel> offers = offerService.findAllOffers();
         model.addAttribute("offers", offers);
         List<String> selectOptions = List.of("bg", "en", "nl", "sr");
         model.addAttribute("selectOptions", selectOptions);
@@ -52,7 +52,7 @@ public class OfferCotroller {
 
     @GetMapping("details/{id}")
     public String getDetails(Model model, @PathVariable Long id) throws IllegalArgumentException {
-        OfferDto offerDto = offerService.findById(id);
+        OfferServiceModel offerDto = offerService.findById(id);
         model.addAttribute("offer", offerDto);
         return "offers/offer-details";
     }
@@ -68,6 +68,8 @@ public class OfferCotroller {
         UpdateOfferViewModel updateOfferViewModel = offerService.getUpdateOfferViewModel(id);
         model.addAttribute("updateOfferViewModel", updateOfferViewModel);
 
+        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
+        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         return "offers/update";
     }

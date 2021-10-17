@@ -6,11 +6,11 @@ import bg.softuni.mobilele.models.entities.enums.TransmissionType;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public class OfferDto extends BaseDto{
+public class OfferServiceModel extends BaseDto{
 
     private String description;
 
-    private EngineType engineType;
+    private String engineType;
 
     private String imageUrl;
 
@@ -18,11 +18,11 @@ public class OfferDto extends BaseDto{
 
     private BigDecimal price;
 
-    private TransmissionType transmission;
+    private String transmission;
 
     private int year;
 
-    private ModelDto model;
+    private ModelServiceModel model;
 
     private UserDto seller;
 
@@ -36,11 +36,11 @@ public class OfferDto extends BaseDto{
         this.description = description;
     }
 
-    public EngineType getEngineType() {
+    public String getEngineType() {
         return engineType;
     }
 
-    public void setEngineType(EngineType engineType) {
+    public void setEngineType(String engineType) {
         this.engineType = engineType;
     }
 
@@ -68,11 +68,11 @@ public class OfferDto extends BaseDto{
         this.price = price;
     }
 
-    public TransmissionType getTransmission() {
+    public String getTransmission() {
         return transmission;
     }
 
-    public void setTransmission(TransmissionType transmission) {
+    public void setTransmission(String transmission) {
         this.transmission = transmission;
     }
 
@@ -84,11 +84,11 @@ public class OfferDto extends BaseDto{
         this.year = year;
     }
 
-    public ModelDto getModel() {
+    public ModelServiceModel getModel() {
         return model;
     }
 
-    public void setModel(ModelDto model) {
+    public void setModel(ModelServiceModel model) {
         this.model = model;
     }
 

@@ -29,6 +29,7 @@
                         <option th:each="model: ${addOfferViewModel.models}"
                                 th:text="${model.name}"
                                 th:value="${model.name}"
+                                th:selected="${model.name} == *{model}"
                                 >Model
                         </option>
                     </optgroup>
@@ -39,7 +40,7 @@
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label for="price" class="text-white font-weight-bold">Price</label>
-                <input id="price" th:name="price" type="number" min="0" step="100" class="form-control"
+                <input id="price" th:name="price" th:value="*{price}" type="number" min="0" step="100" class="form-control"
                        placeholder="Suggested price"/>
                 <p th:if="${#fields.hasErrors('price')}" class="errors alert alert-danger">
                     Suggested price is required.
@@ -54,6 +55,7 @@
                     <option th:each="engineType: ${addOfferViewModel.engineTypes}"
                             th:text="${engineType}"
                             th:value="${engineType}"
+                            th:selected="${engineType.toString()} == *{engineType}"
                             >
                         Engine type
                     </option>
@@ -69,7 +71,8 @@
                     <option th:each="transmissionType: ${addOfferViewModel.transmissionTypes}"
                             th:text="${transmissionType}"
                             th:value="${transmissionType}"
-                            >
+                            th:selected="${transmissionType.toString()} == *{transmissionType}"
+                    >
                         Transmission type
                     </option>
                 </select>
@@ -81,7 +84,7 @@
         <div class="row">
             <div class="form-group col-md-6 mb-3">
                 <label for="year" class="text-white font-weight-bold">Year</label>
-                <input id="year" th:name="year" type="number" min="1900" max="2099" step="1" class="form-control"
+                <input id="year" th:name="year" th:value="*{year}" type="number" min="1900" max="2099" step="1" class="form-control"
                        placeholder="Manufacturing year"/>
                 <p th:if="${#fields.hasErrors('year')}" class="errors alert alert-danger">
                     Manufacturing year is required.
@@ -89,7 +92,7 @@
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label for="mileage" class="text-white font-weight-bold">Mileage</label>
-                <input id="mileage" type="number" th:name="mileage" min="0" max="900000" step="1000"
+                <input id="mileage" type="number" th:name="mileage" th:value="*{mileage}" min="0" max="900000" step="1000"
                        class="form-control"
                        placeholder="Mileage in kilometers"/>
                 <p th:if="${#fields.hasErrors('mileage')}" class="errors alert alert-danger">
@@ -100,7 +103,7 @@
 
         <div class="form-group">
             <label class="text-white font-weight-bold" for="description">Description</label>
-            <textarea id="description" type="textarea" th:name="description" class="form-control" rows="3"
+            <textarea id="description" type="textarea" th:name="description" th:text="*{description}" class="form-control" rows="3"
                       placeholder="Description"></textarea>
             <p th:if="${#fields.hasErrors('description')}" class="errors alert alert-danger">
                 Description is required.
@@ -108,9 +111,9 @@
         </div>
         <div class="form-group">
             <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>
-            <input id="imageUrl" type="url" th:name="imageUrl" class="form-control"
+            <input id="imageUrl" type="url" th:name="imageUrl" th:value="*{imageUrl}" class="form-control"
                    placeholder="Put vehicle image URL here">
-            <p th:if="${#fields.hasErrors('imageUrl')}" class="errors alert alert-danger">
+            <p th:if="${#fields.hasErrors('imageUrl')}"  class="errors alert alert-danger">
                 Vehicle image URL is required.
             </p>
         </div>

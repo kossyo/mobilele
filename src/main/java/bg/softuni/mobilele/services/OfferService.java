@@ -1,20 +1,16 @@
 package bg.softuni.mobilele.services;
 
-import bg.softuni.mobilele.models.bindings.offer.AddOfferBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.AddOfferViewModel;
-import bg.softuni.mobilele.models.bindings.offer.UpdateOfferBindingModel;
-import bg.softuni.mobilele.models.bindings.offer.UpdateOfferViewModel;
-import bg.softuni.mobilele.models.dtos.OfferDto;
+import bg.softuni.mobilele.models.bindings.offer.*;
+import bg.softuni.mobilele.models.dtos.OfferServiceModel;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
 public interface OfferService {
-    List<OfferDto> findAllOffers();
+    List<OfferServiceModel> findAllOffers();
 
-    OfferDto findById(Long id) throws IllegalArgumentException;
+    OfferServiceModel findById(Long id) throws IllegalArgumentException;
 
     void update(UpdateOfferBindingModel offerUpdateView);
 
@@ -32,5 +28,13 @@ public interface OfferService {
 
     UpdateOfferViewModel getUpdateOfferViewModel(Long id);
 
+    void setModelsForThisBrand(OfferServiceModel offerServiceModel, UpdateOfferViewModel updateOfferViewModel);
+
+    AddOfferViewModel fillSelectMenusAllModels(AddOfferViewModel addOfferViewModel);
+
+    UpdateOfferViewModel fillSelectMenusAllModelsOnlyThisBrand(UpdateOfferViewModel updateOfferViewModel);
+
     AddOfferViewModel getAddOfferViewModel();
+
+    void addBrandId(UpdateOfferViewModel updateOfferViewModel, Long id);
 }

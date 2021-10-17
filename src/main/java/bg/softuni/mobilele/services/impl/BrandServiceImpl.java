@@ -1,12 +1,15 @@
 package bg.softuni.mobilele.services.impl;
 
 import bg.softuni.mobilele.models.dtos.BrandDto;
-import bg.softuni.mobilele.models.dtos.ModelDto;
+import bg.softuni.mobilele.models.dtos.ModelServiceModel;
 import bg.softuni.mobilele.models.entities.Brand;
 import bg.softuni.mobilele.models.entities.Model;
+import bg.softuni.mobilele.models.service.BrandServiceModel;
+import bg.softuni.mobilele.repos.BrandRepository;
 import bg.softuni.mobilele.repos.ModelRepository;
 import bg.softuni.mobilele.services.BaseService;
 import bg.softuni.mobilele.services.BrandService;
+import bg.softuni.mobilele.services.ModelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,14 @@ import java.util.Optional;
 public class BrandServiceImpl extends BaseService implements BrandService {
 
     private final ModelRepository modelRepository;
+    private final BrandRepository brandRepository;
+    private final ModelService modelService;
     private final ModelMapper modelMapper;
 
-    public BrandServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper, ModelMapper modelMapper1) {
+    public BrandServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper, BrandRepository brandRepository, ModelService modelService, ModelMapper modelMapper1) {
         this.modelRepository = modelRepository;
+        this.brandRepository = brandRepository;
+        this.modelService = modelService;
         this.modelMapper = modelMapper1;
     }
 
@@ -41,13 +48,14 @@ public class BrandServiceImpl extends BaseService implements BrandService {
                 brandDtos.add(brandDto);
                 brandDtoByNameOpt = Optional.of(brandDto);
             }
-            ModelDto modelDto = new ModelDto();
-            modelMapper.map(modelEntity, modelDto);
+            ModelServiceModel modelServiceModel = new ModelServiceModel();
+            modelMapper.map(modelEntity, modelServiceModel);
             brandDto = brandDtoByNameOpt.get();
-            brandDto.addModel(modelDto);
+            brandDto.addModel(modelServiceModel);
         }
         return brandDtos;
     }
+
     private  static Optional<BrandDto> findBrandDtoByName(String name, List<BrandDto> brandDtos) {
 
         return brandDtos

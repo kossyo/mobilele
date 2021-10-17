@@ -1,15 +1,10 @@
 package bg.softuni.mobilele.models.bindings.offer;
 
-import bg.softuni.mobilele.models.dtos.ModelDto;
-import bg.softuni.mobilele.models.entities.enums.EngineType;
-import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class AddOfferBindingModel {
 

@@ -1,15 +1,15 @@
-package bg.softuni.mobilele.models.dtos;
+package bg.softuni.mobilele.models.service;
 
-import java.util.ArrayList;
+import bg.softuni.mobilele.models.dtos.ModelServiceModel;
+
 import java.util.List;
 
-public class BrandDto extends BaseDto{
-    private String name;
-    private List<ModelServiceModel> models;
+public class BrandServiceModel {
 
-    public BrandDto(){
-        this.models = new ArrayList<>();
-    }
+    private Long id;
+    private String name;
+
+    private List<ModelServiceModel> models;
 
     public String getName() {
         return name;
@@ -26,7 +26,12 @@ public class BrandDto extends BaseDto{
     public void setModels(List<ModelServiceModel> models) {
         this.models = models;
     }
-    public void addModel(ModelServiceModel model) {
-        this.models.add(model);
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

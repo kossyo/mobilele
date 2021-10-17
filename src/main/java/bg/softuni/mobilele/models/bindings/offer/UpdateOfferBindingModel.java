@@ -1,23 +1,13 @@
 package bg.softuni.mobilele.models.bindings.offer;
 
-import bg.softuni.mobilele.models.dtos.ModelDto;
-import bg.softuni.mobilele.models.dtos.OfferDto;
-import bg.softuni.mobilele.models.entities.enums.EngineType;
-import bg.softuni.mobilele.models.entities.enums.TransmissionType;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class UpdateOfferBindingModel {
 
     private Long offerId;
 
-    @NotNull(message = "model required")
+//    @NotBlank(message = "model required")
     @Size(min = 1, message = "model required")
     private String model;
 
@@ -35,7 +25,7 @@ public class UpdateOfferBindingModel {
 
     @NotNull
     @Min(1)
-    private int mileage;
+    private Integer mileage;
 
     @NotNull
     @Min(1)
@@ -48,7 +38,7 @@ public class UpdateOfferBindingModel {
     @NotNull
     @Min(1900)
     @Max(2099)
-    private int year;
+    private Integer year;
 
     public Long getOfferId() {
         return offerId;
@@ -90,11 +80,11 @@ public class UpdateOfferBindingModel {
         this.imageUrl = imageUrl;
     }
 
-    public int getMileage() {
+    public Integer getMileage() {
         return mileage;
     }
 
-    public void setMileage(int mileage) {
+    public void setMileage(Integer mileage) {
         this.mileage = mileage;
     }
 
@@ -114,11 +104,11 @@ public class UpdateOfferBindingModel {
         this.transmissionType = transmissionType;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 }

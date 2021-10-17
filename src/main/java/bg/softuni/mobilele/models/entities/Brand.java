@@ -1,8 +1,7 @@
 package bg.softuni.mobilele.models.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "BRANDS")
@@ -10,6 +9,9 @@ public class Brand extends BaseEntity{
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.EAGER)
+    private List<Model> models;
 
     public String getName() {
         return name;
@@ -19,13 +21,20 @@ public class Brand extends BaseEntity{
         this.name = name;
     }
 
+
+    public List<Model> getModels() {
+        return models;
+    }
+
+    public void setModels(List<Model> models) {
+        this.models = models;
+    }
+
     @Override
     public String toString() {
         return "Brand{" +
-                "id=" + id +
-                ", created=" + created +
-                ", updated=" + updated +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+//                ", models=" + models +
                 '}';
     }
 }
