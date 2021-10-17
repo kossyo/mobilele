@@ -4,6 +4,7 @@ import bg.softuni.mobilele.models.bindings.offer.*;
 import bg.softuni.mobilele.models.dtos.OfferServiceModel;
 import bg.softuni.mobilele.models.entities.enums.EngineType;
 import bg.softuni.mobilele.models.entities.enums.TransmissionType;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -37,4 +38,6 @@ public interface OfferService {
     AddOfferViewModel getAddOfferViewModel();
 
     void addBrandId(UpdateOfferViewModel updateOfferViewModel, Long id);
+
+    void removeErroneousFields(BindingResult updateOfferBindingModel, UpdateOfferViewModel updateOfferViewModel);
 }

@@ -60,16 +60,16 @@ public class OfferCotroller {
     @GetMapping("updateOffer/{id}")
     public String updateOffer(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         boolean wasRedirected = model.containsAttribute("updateOfferBindingModel");
-
-        if (!wasRedirected) {
-            model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
-        }
-
         UpdateOfferViewModel updateOfferViewModel = offerService.getUpdateOfferViewModel(id);
         model.addAttribute("updateOfferViewModel", updateOfferViewModel);
 
-        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
-        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
+        if (!wasRedirected) {
+            model.addAttribute("updateOfferBindingModel", new UpdateOfferBindingModel());
+        }else{
+            offerService.removeErroneousFields((BindingResult) model.getAttribute("org.springframework.validation.BindingResult.updateOfferBindingModel"), updateOfferViewModel);
+        }
+
+
         //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         return "offers/update";
     }

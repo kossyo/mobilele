@@ -19,7 +19,10 @@ import bg.softuni.mobilele.services.ModelService;
 import bg.softuni.mobilele.services.OfferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -236,6 +239,22 @@ public class OfferServiceImpl implements OfferService {
         updateOfferViewModel.setBrandId(offer.getModel().getBrand().getId());
     }
 
+    @Override
+    public void removeErroneousFields(BindingResult bindingResult, UpdateOfferViewModel updateOfferViewModel) {
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            switch (fieldError.getField()){
+                case "model": updateOfferViewModel.setModel(new ModelServiceModel()); break;
+                case "description": updateOfferViewModel.setDescription("");  break;
+                case "engineType": updateOfferViewModel.setEngineType(""); break;
+                case "imageUrl": updateOfferViewModel.setImageUrl(""); break;
+                case "mileage": updateOfferViewModel.setMileage(0); break;
+                case "price": updateOfferViewModel.setPrice(new BigDecimal("0")); break;
+                case "transmissionType": updateOfferViewModel.setTransmissionType(""); break;
+                case "year": updateOfferViewModel.setYear(0); break;
+            }
+        }
+    }
+
 //    @Override
 //    public void removeErroneousFields(UpdateOfferViewModel updateOfferViewModel, BindingResult bindingResult) {
 //        for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -252,21 +271,5 @@ public class OfferServiceImpl implements OfferService {
 //        }
 //    }
 ////
-//    @Override
-//    public UpdateOfferViewModel completeInitUpdateOfferViewModel(Long id) {
-////        UpdateOfferViewModel updateOfferViewModel =
-////        modelMapper.map(updateOfferBindingModel, UpdateOfferViewModel.class);
-//        BrandServiceModel brandByModel = brandService.findBrandByModel(updateOfferViewModel.getModel());
-//
-//        List<ModelServiceModel> models = modelService.findAllByBrandId(brandByModel.getId());
-//        List<EngineType> engineTypes = initEngineTypes();
-//        List<TransmissionType> transmissionTypes = initTransmissionTypes();
-//
-//        updateOfferViewModel.setModels(models);
-//        updateOfferViewModel.setEngineTypes(engineTypes);
-//        updateOfferViewModel.setTransmissionTypes(transmissionTypes);
-//
-//        return updateOfferViewModel;
-//
-//    }
+
 }
