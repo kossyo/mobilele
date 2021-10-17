@@ -68,9 +68,6 @@ public class OfferCotroller {
         }else{
             offerService.removeErroneousFields((BindingResult) model.getAttribute("org.springframework.validation.BindingResult.updateOfferBindingModel"), updateOfferViewModel);
         }
-
-
-        //todo: remove correct values of mistaken fields so they don't reappear again upon redirect
         return "offers/update";
     }
 
