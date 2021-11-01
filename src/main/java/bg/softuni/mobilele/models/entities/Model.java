@@ -19,7 +19,7 @@ public class Model extends BaseEntity {
 
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BRAND_ID")
     private Brand brand;
 

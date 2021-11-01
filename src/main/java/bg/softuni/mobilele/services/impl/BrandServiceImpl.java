@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BrandServiceImpl extends BaseService implements BrandService {
@@ -35,25 +36,11 @@ public class BrandServiceImpl extends BaseService implements BrandService {
     @Override
     public List<BrandDto> findAll() {
 
-        List<BrandDto> brandDtos = new ArrayList<>();
-        List<Model> modelEltities = modelRepository.findAll();
-
-        for (Model modelEntity : modelEltities) {
-            Brand brandEntity = modelEntity.getBrand();
-            Optional<BrandDto> brandDtoByNameOpt = findBrandDtoByName(brandEntity.getName(), brandDtos);
-            BrandDto brandDto;
-            if (brandDtoByNameOpt.isEmpty()) {
-                brandDto = new BrandDto();
-                modelMapper.map(brandEntity, brandDto);
-                brandDtos.add(brandDto);
-                brandDtoByNameOpt = Optional.of(brandDto);
-            }
-            ModelServiceModel modelServiceModel = new ModelServiceModel();
-            modelMapper.map(modelEntity, modelServiceModel);
-            brandDto = brandDtoByNameOpt.get();
-            brandDto.addModel(modelServiceModel);
-        }
-        return brandDtos;
+        return brandRepository
+                .findAll()
+                .stream()
+                .map(brand -> modelMapper.map(brand, BrandDto.class))
+                .collect(Collectors.toList());
     }
 
     private  static Optional<BrandDto> findBrandDtoByName(String name, List<BrandDto> brandDtos) {
