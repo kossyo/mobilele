@@ -10,7 +10,9 @@ public class UserRegisterBindingModel {
 
     private String password;
 
-    private String rolesSelected;
+    private String confirmPassword;
+
+//    private String rolesSelected;
 
     public String getFirstName() {
         return firstName;
@@ -40,15 +42,24 @@ public class UserRegisterBindingModel {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public String getRolesSelected() {
+//        return rolesSelected;
+//    }
+//
+//    public void setRolesSelected(String rolesSelected) {
+//        this.rolesSelected = rolesSelected;
+//    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
-    public String getRolesSelected() {
-        return rolesSelected;
-    }
-
-    public void setRolesSelected(String rolesSelected) {
-        this.rolesSelected = rolesSelected;
+    public UserRegisterBindingModel setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+        return this;
     }
 }

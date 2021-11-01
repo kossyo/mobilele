@@ -6,6 +6,7 @@ import bg.softuni.mobilele.models.service.UserRegisterServiceModel;
 import javax.servlet.http.HttpSession;
 
 public interface UserService {
+    boolean register(UserRegisterServiceModel userRegisterServiceModel);
 //    boolean register(UserRegisterServiceModel UserRegisterSericeModel);
 //
 //    boolean login(UserLoginBindingModel userLoginBindingModel);

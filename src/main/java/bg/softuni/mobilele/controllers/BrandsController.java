@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("brands")
 public class BrandsController {
 
-    private final BrandService brandService ;
+    private final BrandService brandService;
 
     public BrandsController(BrandService brandService) {
         this.brandService = brandService;

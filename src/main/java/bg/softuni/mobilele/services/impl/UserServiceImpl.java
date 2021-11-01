@@ -1,8 +1,6 @@
 package bg.softuni.mobilele.services.impl;
 
-import bg.softuni.mobilele.models.entities.Role;
 import bg.softuni.mobilele.models.entities.User;
-import bg.softuni.mobilele.models.entities.enums.RoleType;
 import bg.softuni.mobilele.models.service.UserRegisterServiceModel;
 import bg.softuni.mobilele.repos.UserRepository;
 import bg.softuni.mobilele.services.RoleService;
@@ -11,8 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,30 +26,16 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Override
-//    public boolean register(UserRegisterServiceModel userRegisterServiceModel) {
-//
-//        Optional<User> userOpt = userRepository.findUserByUsername(userRegisterServiceModel.getUsername());
-//        if (userOpt.isPresent()) {
-//            return false;
-//        }
-//        List<Role> roles = new ArrayList<>();
-//        User user = modelMapper.map(userRegisterServiceModel, User.class);
-//        user.setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()));
-//        String rolesSelected = userRegisterServiceModel.getRolesSelected();
-//
-//        for (String roleString : rolesSelected.split(",")) {
-//            Role role = roleService.findUserRoleByRole(RoleType.valueOf(roleString));
-//            roles.add(role);
-//        }
-//        user.setRoles(roles);
-//        userRepository.save(user);
-//        return true;
-//    }
+    @Override
+    public boolean register(UserRegisterServiceModel userRegisterServiceModel) {
 
-
-
-    private Optional<User> findUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        Optional<User> userOpt = userRepository.findUserByUsername(userRegisterServiceModel.getUsername());
+        if (userOpt.isPresent()) {
+            return false;
+        }
+        User user = modelMapper.map(userRegisterServiceModel, User.class);
+        user.setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()));
+        userRepository.save(user);
+        return true;
     }
 }

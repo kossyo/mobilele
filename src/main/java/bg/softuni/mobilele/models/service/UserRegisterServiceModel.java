@@ -8,8 +8,8 @@ public class UserRegisterServiceModel {
     private String username;
 
     private String password;
-
-    private String rolesSelected;
+//
+//    private String rolesSelected;
 
     public String getFirstName() {
         return firstName;
@@ -42,12 +42,12 @@ public class UserRegisterServiceModel {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getRolesSelected() {
-        return rolesSelected;
-    }
-
-    public void setRolesSelected(String rolesSelected) {
-        this.rolesSelected = rolesSelected;
-    }
+//
+//    public String getRolesSelected() {
+//        return rolesSelected;
+//    }
+//
+//    public void setRolesSelected(String rolesSelected) {
+//        this.rolesSelected = rolesSelected;
+//    }
 }
