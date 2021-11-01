@@ -37,15 +37,15 @@ public class OfferCotroller {
 
         List<OfferServiceModel> offers = offerService.findAllOffers();
         model.addAttribute("offers", offers);
-        List<String> selectOptions = List.of("bg", "en", "nl", "sr");
-        model.addAttribute("selectOptions", selectOptions);
+//        List<String> selectOptions = List.of("bg", "en", "nl", "sr");
+//        model.addAttribute("selectOptions", selectOptions);
 
         //managed with session
-        String valSelFromCookie = (String) session.getAttribute("valSelFromCookie");// not a cookie, just a wrong var name
-        if (valSelFromCookie == null) {
-            valSelFromCookie = "nl";
-        }
-        model.addAttribute("valSelFromCookie", valSelFromCookie);
+//        String valSelFromCookie = (String) session.getAttribute("valSelFromCookie");// not a cookie, just a wrong var name
+//        if (valSelFromCookie == null) {
+//            valSelFromCookie = "nl";
+//        }
+//        model.addAttribute("valSelFromCookie", valSelFromCookie);
 
         return "offers/all-offers";
     }
